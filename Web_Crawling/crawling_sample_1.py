@@ -1,3 +1,5 @@
+#find() 객체
+
 from bs4 import BeautifulSoup
 
 with open('HTML_sample.html','r', encoding='utf-8') as f:
