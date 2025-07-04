@@ -1,4 +1,5 @@
 # 추출한 데이터 중 텍스트 데이터만 저장하기
+# 중고나라에서 검색한 항목에 대한 제목과 가격을 csv 파일에 저장
 import sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -6,7 +7,7 @@ import time
 
 keyword = input("크롤링할 키워드는 무엇입니까? : ")
 
-upload_path = "C:\Data_Analysis_Study\Web_Crawling\data_test.txt"
+upload_path = "C:\Data_Analysis_Study\Web_Crawling\data_test.csv"
 orig_stdout = sys.stdout
 file = open(upload_path, 'a' , encoding='utf-8')
 sys.stdout = file
@@ -25,11 +26,11 @@ data = Chrome_Driver.page_source
 full_html_data = BeautifulSoup(data,"html.parser")
 
 content_list = full_html_data.select('h2.md\\:text-base')
-
+price_list = full_html_data.select('div.lg\\:mt-1\\.5')
 #print(content_list)
 
-for i in content_list:
-    print(i.text.strip())
+for i in range(len(content_list)):
+    print(content_list[i].text.strip(), "\t", price_list[i].text.strip())
     print("\n")
 
 sys.stdout = orig_stdout

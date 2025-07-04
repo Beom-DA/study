@@ -1,16 +1,14 @@
-# 추출한 데이터 중 텍스트 데이터만 저장하기
-import sys
+# crawling_sample_output_text.py 에서 했던 예제를 이용해서
+# 추가적인 기능을 더 써볼 것이다.
+# 첫 번째, DataFrame() 을 써서 데이터를 다루고 저장한다.
+# 두 번째, 2 페이지 이상의 데이터 처리 방법을 연습한다.
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
+import pandas as pd
 
 keyword = input("크롤링할 키워드는 무엇입니까? : ")
 
-upload_path = "C:\Data_Analysis_Study\Web_Crawling\data_test.txt"
-orig_stdout = sys.stdout
-file = open(upload_path, 'a' , encoding='utf-8')
-sys.stdout = file
-time.sleep(1)
 
 
 Chrome_Driver = webdriver.Chrome() # ChromeDriver를 실행
@@ -26,15 +24,11 @@ full_html_data = BeautifulSoup(data,"html.parser")
 
 content_list = full_html_data.select('h2.md\\:text-base')
 
-#print(content_list)
+laptop = pd.DataFrame()
 
-for i in content_list:
-    print(i.text.strip())
-    print("\n")
 
-sys.stdout = orig_stdout
-file.close()
-print("끝")
+
+
 
 
 
