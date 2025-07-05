@@ -25,11 +25,51 @@ time.sleep(2)
 Chrome_Driver.find_element(By.XPATH,  '//a[@title="여행정보 페이지로 이동"]').click()
 time.sleep(2)
 
-data = Chrome_Driver.page_source
-full_html_data = BeautifulSoup(data, "html.parser")
+
+name_data_list = []
+explain_data_list = []
+
+for i in range(12):
+    if i == 3 or i == 7 :
+        continue
+
+    xpath = f'//div[@id="search_result"]/ul/li[{i+1}]/a[@class="img"]'
+    Chrome_Driver.find_element(By.XPATH , xpath).click()
+    time.sleep(2) #시간 설정을 해놓지 않으면 데이터 로드가 되지 않은채로 html 코드를 받기 때문에 name_data의 값이 []이 나온다.
+
+    data = Chrome_Driver.page_source
+    full_html_data = BeautifulSoup(data, "html.parser")
+    name_data = full_html_data.select('div.titleType1 > h2#topTitle')
+    explain_data = full_html_data.select('div.inr_wrap > div.inr > p') #select 함수는 CSS_Selector만 지원하기때문에 Xpath를 사용할 수 없다.
+    
+    name_data_list.extend(name_data)
+    explain_data_list.extend(explain_data)
+
+    Chrome_Driver.back()
+    time.sleep(2)
 
 
-i = 1
-xpath = f'//div[@id="search_result"]/ul/li[{i}]/a[@class="img"]'
-Chrome_Driver.find_element(By.XPATH , xpath).click()
-time.sleep(2)
+num_list = []
+total_name_list = []
+total_explain_list = []
+
+for i in range(len(name_data_list)):
+    num_list.append(i+1)
+    total_name_list.append(name_data_list[i].get_text())
+    total_explain_list.append(explain_data_list[i].get_text())
+
+#print(total_name_list)
+
+
+
+# 수집한 데이터들을 파일에 저장
+
+place_list = pd.DataFrame()
+place_list['번호'] = num_list
+place_list['관광명소 이름'] = total_name_list
+place_list['설명'] = total_explain_list
+
+xlsx_name = "C:\Data_Analysis_Study\Web_Crawling\\tour.xlsx"
+
+place_list.to_excel(xlsx_name)
+

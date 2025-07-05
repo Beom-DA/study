@@ -32,7 +32,7 @@ for i in range(10): # 10페이지까지의 데이터를 수집
     full_html_data = BeautifulSoup(data,"html.parser")
 
     name_data = full_html_data.select('h2.md\\:text-base')
-    total_name_data.extend(name_data)
+    total_name_data.extend(name_data)#extend()와 += 중에 extend()가 훨씬 효율적이고 빠르다.
     price_data = full_html_data.select('div.lg\\:mt-1\\.5')
     total_price_data.extend(price_data)
 
@@ -47,7 +47,7 @@ price_list = []
 for i in range(len(total_name_data)):
     num_list.append(num)
 
-    name_list.append(total_name_data[i].get_text())#extend()와 += 중에 extend()가 훨씬 효율적이고 빠르다.
+    name_list.append(total_name_data[i].get_text())
 
     price_list.append(total_price_data[i].get_text())
 
