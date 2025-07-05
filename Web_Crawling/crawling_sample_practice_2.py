@@ -47,7 +47,7 @@ price_list = []
 for i in range(len(total_name_data)):
     num_list.append(num)
 
-    name_list.append(total_name_data[i].get_text())
+    name_list.append(total_name_data[i].get_text())#extend()와 += 중에 extend()가 훨씬 효율적이고 빠르다.
 
     price_list.append(total_price_data[i].get_text())
 
