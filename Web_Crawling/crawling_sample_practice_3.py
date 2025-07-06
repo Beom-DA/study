@@ -13,7 +13,9 @@ from selenium.webdriver.common.by import By
 word = input("검색어를 입력하세요 : ")
 
 Chrome_Driver = webdriver.Chrome()
+Chrome_Driver.set_window_size(1120,696)
 Chrome_Driver.get("https://korean.visitkorea.or.kr/main/main.do")
+
 time.sleep(2)
 
 Chrome_Driver.find_element(By.XPATH , '//span[@class="input"]/a[@class="btn_search"]').click()
@@ -28,6 +30,8 @@ time.sleep(2)
 
 name_data_list = []
 explain_data_list = []
+
+start_time = time.time()
 
 for i in range(12):
     if i == 3 or i == 7 :
@@ -72,4 +76,7 @@ place_list['설명'] = total_explain_list
 xlsx_name = "C:\Data_Analysis_Study\Web_Crawling\\tour.xlsx"
 
 place_list.to_excel(xlsx_name)
+
+end_time = time.time()
+print(f"데이터 처리 시간 : {end_time - start_time:.2f}초")
 
