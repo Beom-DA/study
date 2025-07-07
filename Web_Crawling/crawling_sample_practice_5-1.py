@@ -9,6 +9,8 @@ import os
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import cloudscraper
+import sys
 
 #url_addr = input("1. 웹 페이지 주소를 입력하세요 : ")
 url_addr = 'http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020301'
@@ -77,10 +79,37 @@ if f_choice == '1' :
 elif f_choice == '2' :
     WebDriverWait(Chrome_Driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//div[@data-type="csv"]/a'))).click()
 
-time.sleep(20)
+
+# generate.cmd를 이용해 otp 코드를 요청한다
+gen_otp_url = 'http://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd'
+gen_otp_data = {
+    'locale' : 'ko_KR',
+    'mktld' : 'ALL',
+    'strtDd' : '20250627',
+    'endDd' : '20250704',
+    'share' : '2',
+    'money' : '3',
+    'csvxls_isNo' : 'false',
+    'name' : 'fileDown',   
+    'url' : 'dbms/MDC/STAT/standard/MDCSTAT02201'
+}
+
+scraper = cloudscraper.create_scraper()
+response = scraper.post(gen_otp_url, params = gen_otp_data)
+
+otp = response.text
+print("result : ", response)
+print("otp : ", otp)
+
+xlsx_url = 'http://data.krx.co.kr/comm/fileDn/download_excel/download.cmd'
+xlsx_form_data = scraper.post(xlsx_url, params = {'code':otp})
+#xlsx_form_data.encoding = 'EUC-KR'
+#xlsx_form_data.text
+time.sleep(2)
+print(xlsx_form_data.text)
 
 end_time = time.time()
 total_time = end_time - start_time
 print("소요시간 : ", total_time)
 
-Chrome_Driver.close()
+
