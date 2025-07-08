@@ -95,30 +95,31 @@ def getStockList():
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Host': 'data.krx.co.kr',
         'Origin': 'http://data.krx.co.kr',
-        'Referer': 'http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0203',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.118 Whale/2.11.126.23 Safari/537.36',
+        'Referer': 'http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020301',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest',
     }
     params = {
         'bld': 'dbms/MDC/STAT/standard/MDCSTAT02201',
         'locale' : 'ko_KR',
         'mktld' : 'ATK',
-        'strtDd' : '20250627',
-        'endDd' : '20250704',
+        'strtDd' : '20250630',
+        'endDd' : '20250707',
         'share' : '2',
         'money' : '3',
-        'csvxls_isNo' : 'True',   
+        'csvxls_isNo' : 'False',   
     }
 
 
-    response = requests.get(requestUrl, params, headers=headers)
+    response = requests.post(requestUrl, params, headers=headers)
     
-    #Byte정보 --> decode --> jason --> dataframe
+    
+    '''#Byte정보 --> decode --> jason --> dataframe
     dataByte = response.content
     dataDecoded = dataByte.decode('utf8')
     print("dataDecoded = ",dataDecoded)
     data = json.loads(dataDecoded)
-    dataJson = json.dumps(data, indent=4, sort_keys=True)
+    dataJson = json.dumps(data, indent=4)
     df = pd.read_json(dataJson)
     print(df)
     df = df['output']
@@ -127,22 +128,25 @@ def getStockList():
     newDf = pd.DataFrame(data=[df[0]])
 
     for i in range(1, df.size):
-        newDf = pd.concat([newDf, pd.DataFrame(data=[df[i]])], ignore_index=True)
-        
-    return newDf  
+        newDf = pd.concat([newDf, pd.DataFrame(data=[df[i]])], ignore_index=True)'''
+    
+    df = pd.DataFrame(response.json()['output'])
+    print(df)
+    return df
 
 
 #리스트 정보 받아와서
 stocksDf = getStockList()
 
-#날짜순으로 정리
-stocksDf = stocksDf.sort_values(by="ISU_SRT_CD", ascending= True)
+'''time.sleep(5)
+
 
 #저장
-stocksDf.to_csv('C:\\Data_Analysis_Study\\Web_Crawling\\xlsx_csv\\KRX_data.csv')
+stocksDf.to_csv('C:\\Data_Analysis_Study\\Web_Crawling\\xlsx_csv\\KRX_data.csv')'''
 
 '''end_time = time.time()
 total_time = end_time - start_time
 print("소요시간 : ", total_time)
 '''
 
+#### 이러한 과정의 흔적이 없이 OTP를 바로 두번째 URL에 제출하면 서버는 이를 로봇으로 인식해 데이터를 주지 않습니다.
