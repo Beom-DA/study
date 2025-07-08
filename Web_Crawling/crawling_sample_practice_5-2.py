@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 #url_addr = input("1. 웹 페이지 주소를 입력하세요 : ")
 url_addr = 'http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020301'
 #f_dir = input("2. 파일이 저장될 경로를 쓰세요 : ")
-f_dir = 'C:\\Data_Analysis_Stud\\Web_Crawling\\xlsx_csv'
+f_dir = 'C:\\Data_Analysis_Study\\Web_Crawling\\xlsx_csv'
 
 if os.path.isdir(f_dir): #존재하는 경로인지 확인
     print("경로 확인\n")
