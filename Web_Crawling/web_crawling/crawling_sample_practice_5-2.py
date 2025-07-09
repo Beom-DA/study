@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 #url_addr = input("1. 웹 페이지 주소를 입력하세요 : ")
 url_addr = 'http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201020301'
 #f_dir = input("2. 파일이 저장될 경로를 쓰세요 : ")
-f_dir = 'C:\\Data_Analysis_Study\\Web_Crawling\\xlsx_csv'
+f_dir = 'C:\\Data_Analysis_Study\\Web_Crawling\\web_crawling\\xlsx_csv'
 
 if os.path.isdir(f_dir): #존재하는 경로인지 확인
     print("경로 확인\n")
@@ -30,7 +30,16 @@ choice = input(''' 1.전체      2.KOSPI     3.KOSDAQ   4.KONEX
 
 #웹 브라우저 실행
 start_time = time.time()
-Chrome_Driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+Chrome_Driver = webdriver.Chrome(options=options)
+options.add_experimental_option("prefs", {
+      "download.default_directory": f_dir, # 저장폴더
+      "download.prompt_for_download": False, #propmt 창 뜨지 않게한다.
+      "plugins.always_open_pdf_externally": True #pdf형식 브라우저에보여지지않고 무조건다운로드
+})
+Chrome_Driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': f_dir}}
+command_result = Chrome_Driver.execute("send_command", params)
 Chrome_Driver.get(url_addr)
 Chrome_Driver.maximize_window()
 time.sleep(2)
