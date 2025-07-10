@@ -111,3 +111,11 @@ hexbin.fig.suptitle('Joint Plot of Total Bill and Tip', fontsize = 13, y = 1.03)
 plt.show()'''
 
 # 이차원 밀집도 그리기
+ex = plt.subplots()
+ex = sns.kdeplot(x = tips['total_bill'],
+                 y = tips['tip'],
+                 shade = True)
+ex.set_title('Kernel Density Plot of Total Bill and Tip')
+ex.set_xlabel('Total Bill')
+ex.set_ylabel('Tip')
+plt.show()
