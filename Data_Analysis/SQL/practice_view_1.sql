@@ -27,9 +27,7 @@
 
 
 /************ FUNCTION  ***********/
--- 매개변수는 IN, OUT, INOUT 세 가지로 나뉜다.
-
-/************ IN 매개변수 ***********/
+-- FUNCTION과 PROCEDURE 중 FUNCTION이 실무에 더 적합한 도구ek.
 
 -- CREATE FUNCTION cst_gen_addr_in(IN input_A VARCHAR(20), input_B VARCHAR(20))
 -- RETURNS SETOF customer
@@ -45,6 +43,6 @@
 -- $$;
 
 
-/************ Procedure 실행 *************/
+/************ FUNCTION 실행 *************/
 SELECT *
 	FROM cst_gen_addr_in('man','Seoul');
