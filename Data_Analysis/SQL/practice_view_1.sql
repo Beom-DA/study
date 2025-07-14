@@ -27,7 +27,7 @@
 
 
 /************ FUNCTION  ***********/
--- FUNCTION과 PROCEDURE 중 FUNCTION이 실무에 더 적합한 도구ek.
+-- FUNCTION과 PROCEDURE 중 FUNCTION이 실무에 더 적합한 도구다.
 
 -- CREATE FUNCTION cst_gen_addr_in(IN input_A VARCHAR(20), input_B VARCHAR(20))
 -- RETURNS SETOF customer
