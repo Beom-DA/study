@@ -1,0 +1,58 @@
+import pandas as pd
+import numpy as np
+
+####### 데이터를 처음 만나면 하는 것들
+
+### head & info 메소드
+# 데이터의 샘플을 직접 눈으로 확인(상위 n개 행)
+# 데이터의 크기(길이), 열, 결측치 등 확인
+
+df = pd.read_csv(r'data_analysis_adv/datasets/Uber/Uber.csv')
+#print(df.info())
+
+
+### 변수별 확인
+# 변수별 의미하는 바에 맞게 데이터 타입 변경
+# 변수 내 데이터 특이점 확인(이상치, 결측값, 분포 등)
+
+df['START_DATE*'] = pd.to_datetime(df['START_DATE*'], errors = 'coerce')
+df['END_DATE*'] = pd.to_datetime(df['END_DATE*'], errors = 'coerce')
+df = df.sort_values(['START_DATE*', 'END_DATE*'])
+# print(df['START_DATE*'].unique())  START_DATE*열에 결측치(NaT)이 존재함을 확인
+
+### value_counts 메소드
+# 범주형 변수에 활용
+# 변수의 고유값과 고유값 별 빈도수 확인
+
+#df = df['CATEGORY*'].value_counts()
+#df = df['START*'].value_counts()
+#df['STOP*'].value_counts()
+#print(df)
+
+'''df['PURPOSE*'].value_counts()
+df['PURPOSE*'].isna().sum()'''
+
+### describe 메소드
+# 주로 수치형 변수에 활용
+# 변수의 평균, 분위수, 최대/최소 등 대표 통계값 확인
+# 평균 대 표준편차 비 등으로 변수의 분포 및 이상치 여부 확인 가능
+
+df['MILES*'].describe()
+df[df['MILES*'] == df['MILES*'].max()]
+df = df.drop(1155)
+#print(df['MILES*'].describe())
+
+
+### 파생 변수 추가
+# 데이터 분석의 목적에 따라 주어진 변수들로 새로운 변수를 생성
+# 머신러닝 분야에서 보델의 성능을 높이는데 사용 가능
+
+df['DURATION*'] = (df['END_DATE*'] - df['START_DATE*']).dt.total_seconds() / 60
+#print(df['DURATION*'])
+
+
+### groupby 메소드
+# 특정 변수(들)의 데이터 그룹별 변수의 통계값 확인
+
+df = df.groupby(['CATEGORY*','PURPOSE*'])[['MILES*','DURATION*']].agg(['mean','std','count'])
+print(df)
