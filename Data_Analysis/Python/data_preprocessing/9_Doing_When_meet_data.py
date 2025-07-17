@@ -54,5 +54,29 @@ df['DURATION*'] = (df['END_DATE*'] - df['START_DATE*']).dt.total_seconds() / 60
 ### groupby 메소드
 # 특정 변수(들)의 데이터 그룹별 변수의 통계값 확인
 
-df = df.groupby(['CATEGORY*','PURPOSE*'])[['MILES*','DURATION*']].agg(['mean','std','count'])
-print(df)
+#df = df.groupby(['CATEGORY*','PURPOSE*'])[['MILES*','DURATION*']].agg(['mean','std','count'])
+#print(df)
+
+
+### 변수 간 상관관계 파악
+# 데이터를 구성하는 변수 간 상관관계 파악
+# corr() 메소드를 이용하거나, 시각화를 통한 방법 등이 있음
+
+#df = df[['MILES*', 'DURATION*']].corr()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import linregress
+
+df = df.dropna()
+s, i, r, _, _ = linregress(df['MILES*'], df['DURATION*'])
+# s는 기울기, i는 y절편, r은 스피어만 상관계수, _(언더바)는 변수를 받아오고 받아온 즉시 버리겠다.
+fig, ax = plt.subplots() #fig는 도화지, ax는 컷
+sns.regplot(
+    x = 'MILES*', y = 'DURATION*', data = df, ax = ax,
+    line_kws={
+        'label' : 'y={:.2f}x + {:.2f}, R^2={:.2f}'.format(s, i, r**2)
+    }
+)
+plt.legend()
+plt.show()
