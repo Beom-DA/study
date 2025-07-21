@@ -72,3 +72,11 @@ fig = px.scatter(
 ).update_yaxes(matches=None, showticklabels=True) #seaborn에서 shareY와 같은 기능.
 fig.show()
 
+
+fig = px.box(
+    data_frame=df, x='bmi', y='charges',
+    color='sex', facet_row='region', facet_col='smoker',
+    width=700, height=1200, trendline='ols',
+    facet_col_spacing=0.05 
+)
+fig.show()
