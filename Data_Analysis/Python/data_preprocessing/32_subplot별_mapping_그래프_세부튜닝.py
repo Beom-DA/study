@@ -23,10 +23,6 @@ def custom(lower_spec, target, upper_spec, **kws):
 
     ax.xaxis.set_major_formatter(mpl.dates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
 
-    # target에 해당하는 수평선에 대한 mean값 기입
-    mean = value.mean()
-
-
 g.map(custom, 'lower_spec', 'target', 'upper_spec')
 plt.show()'''
 
