@@ -153,13 +153,158 @@ import streamlit as st
 #     st.text('Your answer is ' + string)
 
 # 방법 2 암호화 O
-string = st.text_input(
-    'Movie title',
-    placeholder='write down the title of your favorite movie',
-    type='password'
-)
-if string:
-    st.text('Your answer is ' + string)
+# string = st.text_input(
+#     'Movie title',
+#     placeholder='write down the title of your favorite movie',
+#     type='password'
+# )
+# if string:
+#     st.text('Your answer is ' + string)
 
 
 ### Streamlig file_uploader 함수
+# file = st.file_uploader(
+#     'Choose a filr' , type='csv', accept_multiple_files=False
+# )
+# if file is not None:
+#     df = pd.read_csv(file)
+#     st.write(df.head(5))
+
+
+### Streamlit slider 함수
+# score = st.slider('Your score is...', 0, 100, 1)
+# st.text('Score : {}'.format(score))
+
+# from datetime import time
+
+# start_time, end_time = st.slider(
+#     'Working time is ...',
+#     min_value = time(0), max_value = time(23),
+#     value = (time(8), time(18)),
+#     format='HH:mm'
+# )
+# st.text('Working time : {}, {}'.format(start_time, end_time))
+
+
+### Matplotlib & Seaborn을 통해 그린 그래프 표현
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+
+# df = sns.load_dataset('tips')
+# fig, ax = plt.subplots()
+# sns.histplot(
+#     data=df, x='total_bill', ax=ax, hue='time'
+# )
+# st.pyplot(fig)
+
+### Plotly 통해 그린 그래프 표현
+# import plotly.express as px
+
+# fig2 = px.box(
+#     data_frame=df, x='day', y='tip',
+#     facet_col='smoker', facet_row='sex',
+#     width=800, height=800
+# )
+# st.plotly_chart(fig2)
+
+
+### (활용) Streamlit 앱에서 원하는 변수를 선택하여 그래프 그리기
+# import plotly.express as px
+# import seaborn as sns
+
+# df = sns.load_dataset('tips')
+
+# x_options = ['day', 'size']
+# y_options = ['total_bill', 'tip']
+# hue_options = ['smoker', 'sex']
+
+# x_options = st.selectbox(
+#     'Select X-axis',
+#     index=None,
+#     options=x_options
+# )
+# y_options = st.selectbox(
+#     'Select Y-axis',
+#     index=None,
+#     options=y_options
+# )
+# hue_options = st.selectbox(
+#     'Select Hue-axis',
+#     index=None,
+#     options=hue_options
+# )
+
+# if (x_options != None) & (y_options != None):
+#     if hue_options != None:
+#         fig3 = px.box(
+#             data_frame=df, x=x_options, y=y_options,
+#             color=hue_options, width=500
+#         )
+#     else:
+#         fig3 = px.box(
+#             data_frame=df, x=x_options, y=y_options,
+#             width=500
+#         )
+
+# st.plotly_chart(fig3)
+
+
+### Streamlit 앱에 이미지 생성하기
+# from PIL import Image
+
+# img = Image.open(r'data_analysis_adv/datasets/images/image1.jpg')
+# st.image(img, width=500, caption='Image from Unsplash')
+
+
+### 사이드바 생성하기
+# st.title('This is main page')
+
+# with st.sidebar:
+#     st.title('This is sidebar')
+#     side_option = st.multiselect(
+#         label='your selection is',
+#         options=['Car', 'Airplane', 'Train', 'Ship'],
+#         placeholder='select transportation'
+#     )
+
+
+### column 생성하기
+# from PIL import Image
+# img2 = Image.open(r'data_analysis_adv/datasets/images/image2.jpg')
+# img3 = Image.open(r'data_analysis_adv/datasets/images/image3.jpg')
+
+# col1, col2 = st.columns(2)
+
+# with col1 :
+#     st.header('Lemonade')
+#     st.image(img2, width=300, caption='Image from Unsplash')
+
+# with col2 :
+#     st.header('Cocktail')
+#     st.image(img3, width=300, caption='Image from Unsplash')
+
+
+### tab 생성하기
+# import plotly.express as px
+
+# tab1, tab2 = st.tabs(['Table', 'Graph'])
+
+# df = pd.read_csv(r'data_analysis_adv/datasets/medical_cost/medical_cost.csv')
+# df = df.query('region == "northwest"')
+
+# with tab1 :
+#     st.table(df.head(5))
+
+# with tab2 : 
+#     fig = px.scatter(
+#         data_frame=df, x='bmi', y='charges'
+#     )
+#     st.plotly_chart(fig)
+
+
+### expander 생성하기
+df = pd.read_csv(r'data_analysis_adv/datasets/medical_cost/medical_cost.csv')
+df = df.query('region == "northwest"')
+
+with st.expander('See data table'):
+    st.table(df.head(5))

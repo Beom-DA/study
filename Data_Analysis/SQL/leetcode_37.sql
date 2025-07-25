@@ -1,14 +1,7 @@
--- https://leetcode.com/problems/sales-analysis-iii/
+-- https://leetcode.com/problems/user-activity-for-the-past-30-days-i/
 
-WITH CTE AS(
-    SELECT DISTINCT product_id
-        FROM sales
-        WHERE sale_date < '2019-01-01'
-        OR sale_date > '2019-03-31'
-)
-
-SELECT DISTINCT product_id, product_name
-    FROM product
-    JOIN sales
-    USING (product_id)
-    WHERE product_id NOT IN (SELECT * FROM CTE);
+SELECT activity_date AS day, COUNT(DISTINCT user_id) AS active_users
+    FROM activity
+    WHERE activity_date >= '2019-06-28'
+    AND activity_date <= '2019-07-27'
+    GROUP BY activity_date;
