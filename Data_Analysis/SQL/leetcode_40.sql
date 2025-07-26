@@ -1,5 +1,3 @@
--- https://leetcode.com/problems/product-price-at-a-given-date/
-
 -- product_id 종류 당 하나씩 모두 저장
 WITH CTE AS(
     SELECT DISTINCT product_id
@@ -17,9 +15,14 @@ CTE2 AS(
 
 -- 최신 날짜에 해당하는 price 값 저장
 CTE3 AS(
-    SELECT product_id, new_price AS price
-    FROM products
-    WHERE (product_id,change_date) IN (SELECT product_id,change_date FROM CTE2)
+    SELECT P.product_id, P.new_price AS price
+    FROM products P
+    JOIN (
+        SELECT product_id,change_date FROM CTE2
+    ) AS C
+    ON P.product_id = C.product_id AND P.change_date = C.change_date
+    --WHERE (product_id,change_date) IN (SELECT product_id,change_date FROM CTE2)
+    -- WHERE IN 문 대신에 JOIN 문으로 바꿨더니 성능이 더 좋아졌다.
 )
 
 -- 결과값
@@ -27,7 +30,3 @@ SELECT product_id, COALESCE(price,10) AS price
     FROM CTE
     LEFT JOIN CTE3
     USING (product_id);
-
-
-
-
