@@ -1,3 +1,5 @@
+-- https://leetcode.com/problems/product-price-at-a-given-date/
+
 -- product_id 종류 당 하나씩 모두 저장
 WITH CTE AS(
     SELECT DISTINCT product_id
