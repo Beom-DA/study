@@ -79,6 +79,9 @@ df_weather['강수량'] = df_weather['강수량'].fillna(0)
 df_consumption = pd.read_csv(r'data/소비_데이터/수원시_소비_데이터.csv')
 df_consumption['날짜'] = pd.to_datetime(df_consumption['날짜'].astype(int).astype(str))
 df_consumption = df_consumption.query('날짜 >= "2024-06-01" & 날짜 <= "2025-05-30"')
-
 df = pd.merge(df_consumption, df_weather, on='날짜', how='left')
-print(df.head())
+
+
+####################### EDA 및 전처리 ##########################
+#print(df.info())
+#print(df.describe())
