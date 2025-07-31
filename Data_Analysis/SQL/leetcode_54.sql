@@ -1,9 +1,12 @@
--- https://leetcode.com/problems/top-travellers/
+-- https://leetcode.com/problems/group-sold-products-by-the-date/
 
 
-SELECT users.name AS name, COALESCE(SUM(rides.distance), 0) AS travelled_distance
-    FROM users
-    LEFT JOIN rides
-    ON users.id = rides.user_id
-    GROUP BY users.id, users.name
-    ORDER BY travelled_distance DESC, users.name;
+WITH CTE AS(
+    SELECT DISTINCT *
+        FROM activities
+)
+
+SELECT sell_date, COUNT(*) AS num_sold, STRING_AGG(product, ',' ORDER BY product)  AS products
+    FROM CTE
+    GROUP BY sell_date
+    ORDER BY sell_date;
