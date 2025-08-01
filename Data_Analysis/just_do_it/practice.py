@@ -105,7 +105,7 @@ fig.show()'''
 
 
 ## Heatmap
-date_list = pd.date_range(start='2024-06-01', end='2025-06-01', freq='45D')
+'''date_list = pd.date_range(start='2024-06-01', end='2025-06-01', freq='45D')
 df_weather['date_bin'] = pd.cut(df_weather['날짜'], bins=date_list)
 precipitation_list = np.arange(0, 170, 20)
 df_weather['pre_bin'] = pd.cut(df_weather['강수량'], bins=precipitation_list)
@@ -113,7 +113,7 @@ df_weather['pre_bin'] = pd.cut(df_weather['강수량'], bins=precipitation_list)
 pivot_df = df_weather.pivot_table(
     index='date_bin', columns= 'pre_bin',
     values='강수량', aggfunc='count'
-)
+)'''
 
 # fig, ax = plt.subplots()
 # sns.heatmap(
@@ -122,8 +122,19 @@ pivot_df = df_weather.pivot_table(
 # plt.show()
 
 #print(pivot_df)
-fig = px.imshow(
+'''fig = px.imshow(
     pivot_df, x=pivot_df.columns.astype(str), y=pivot_df.index.astype(str),
     width=850, height=500, color_continuous_scale="Blues", text_auto=True
+)
+fig.show()'''
+
+
+'''fig, ax = plt.subplots()
+sns.boxenplot(data=df_weather, y='강수량', ax= ax)
+plt.show()'''
+
+fig = px.box(
+    data_frame=df_weather, y='강수량',
+    width=500, height=500
 )
 fig.show()
