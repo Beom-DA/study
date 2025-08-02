@@ -5,76 +5,67 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import platform
+import plotly.graph_objects as go
+from scipy.stats import norm
+from scipy.stats import probplot
+from scipy.stats import stats
+from scipy.stats import boxcox
 from just_do_it_데이터_병합 import df
 
 
-### 평균기온에 대한 이상치 탐색
-# fig = px.box(
-#     data_frame=df, y='평균기온',
-#     width=500, height=500
+### 금액
+## 히스토그램 및 정규분포 곡선
+# mean_data = df['금액'].mean()
+# min_data = df['금액'].min()
+# max_data = df['금액'].max()
+# std = df['금액'].std()
+# x_curve = np.linspace(min_data, max_data, 100)
+# y_curve = norm.pdf(x_curve, mean_data, std)
+# # norm.pdf() --> 평균과 표준편차 기반 정규분포 곡선 생성
+# fig = px.histogram(
+#     data_frame=df, x='금액',width=500, height=500,
+#     title='Histogram with Normal Distribution Curve',
+#     nbins=100, opacity=0.6, histnorm='probability density'
+#     # histnorm = 'probability density' --> 곡선과 맞추기 위해 히스토그램을 확률밀도로 정규화
+# )
+# fig.add_trace(
+#     go.Scatter(
+#         x=x_curve,
+#         y=y_curve,
+#         mode='lines',
+#         name='Normal Distribution',
+#         line=dict(color='red')
+#     )
 # )
 # fig.show()
 
-# Q3, Q1, median = 23.55, 2.9, 14.7
-# IQR = Q3 - Q1
-# lower_bound = Q1 - 1.5 * IQR
-# upper_bound = Q3 + 1.5 * IQR
-# count = 0
-# for outlier in df['평균기온']:
-#     if outlier < lower_bound or outlier > upper_bound :
-#         print("이상치 : {:.2f}".format(outlier))
-#         count += 1
-# print("이상치 개수 : ", count) # 이상치 없음
-
-
-### 강수량에 대한 이상치 탐색
-# fig = px.box(
-#     data_frame=df, y='강수량',
-#     width=500, height=500
-# )
-# fig.show() # box 모양이 그래프에 나타나지 않음 --> 0값이 너무 많아서 Q3와 Q1의 값이 같기 때문에 그런 듯하다.
-# #          # 그래프를 보면 강수량이 151인 데이터가 이상치처럼 보일 수 있지만 실제로 151mm는 충분히 가능한 수치기 때문에 이상치는 없는걸로 결론을 내겠다.
-
-
-## 습도에 대한 이상치 탐색
-# fig = px.box(
-#     data_frame=df, y='평균습도',
-#     width=500, height=500
-# )
-# fig.show()
-
-# Q3, Q1 = 76.5, 60
-# IQR = Q3 - Q1
-# lower_bound = Q1 - 1.5*IQR
-# upper_bound = Q3 + 1.5*IQR
-# count = 0
-# for outlier in df['평균습도']:
-#     if outlier < lower_bound or outlier > upper_bound:
-#         count += 1
-#         print('이상치 : {:.2f}'.format(outlier))
-# print('이상치 개수 : {}개'.format(count))
-
-
-
-## 풍속에 대한 이상치 탐색
+## Q-Q plot 생성
 # fig, ax = plt.subplots()
-# sns.boxenplot(
-#     data=df, y='평균풍속', ax=ax
+# probplot(df['금액'], dist='norm', plot=plt)
+# skewness = stats.skew(df['금액'])
+# str = f'Skewness : {skewness:.3f}'
+# plt.text(
+#     0.05, 0.95, str,
+#     transform=ax.transAxes,
+#     bbox=dict(boxstyle='round', facecolor='lightyellow', edgecolor='gray')
 # )
+# plt.title("Q-Q plot (Normal Distribution)")
+# plt.grid(True)
 # plt.show()
 
-# fig = px.box(
-#     data_frame=df, y='평균풍속', width=500, height=500
-# )
-# fig.show()
+## box-cox 변환
+boxcox_data, fitted_lambda = boxcox(df['금액'])
 
+fig, ax = plt.subplots(1,2, figsize=(12,5))
+sns.histplot(
+    data=df['금액'], ax=ax[0], kde=True
+)
+ax[0].set_title('Before Box-cox')
 
-## 매출액에 대한 이상치 탐색
-# fig = px.box(
-#     data_frame=df, y='금액', width=500, height=500
-# )
-# fig.show()
+sns.histplot(
+    data=boxcox_data, ax=ax[1], kde=True
+)
+ax[1].set_title('After Box-cox')
+plt.show()
 
-
-
-
+print('lambda : ',fitted_lambda)
