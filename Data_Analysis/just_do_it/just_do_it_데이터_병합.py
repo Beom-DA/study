@@ -50,10 +50,11 @@ df_wind = pd.read_csv(r'Data/날씨_데이터/수원시_바람_데이터.csv')
 
 
 
-df_precipitation['날짜'] = pd.to_datetime(df_precipitation['날짜'])
-df_temperature['날짜'] = pd.to_datetime(df_temperature['날짜'])
-df_humidity['날짜'] = pd.to_datetime(df_humidity['날짜'])
-df_wind['날짜'] = pd.to_datetime(df_wind['날짜'])
+df_precipitation['날짜'] = pd.to_datetime(df_precipitation['날짜'], format='%Y-%m-%d')
+df_temperature['날짜'] = df_temperature['날짜'].str.strip()
+df_temperature['날짜'] = pd.to_datetime(df_temperature['날짜'], format='%Y-%m-%d')
+df_humidity['날짜'] = pd.to_datetime(df_humidity['날짜'], format='%Y-%m-%d')
+df_wind['날짜'] = pd.to_datetime(df_wind['날짜'], format='%Y-%m-%d')
 
 ## 날씨 데이터의 날짜에 대한 범주를 2024-06-01 ~ 2025-05-30으로 맞춘다.
 df_precipitation = df_precipitation.query('날짜 >= "2024-06-01" & 날짜 <= "2025-05-30"')
@@ -77,11 +78,13 @@ df_weather['강수량'] = df_weather['강수량'].fillna(0)
 
 ######################### 날씨 데이터와 소비 데이터 병합 ######################
 df_consumption = pd.read_csv(r'data/소비_데이터/수원시_소비_데이터.csv')
-df_consumption['날짜'] = pd.to_datetime(df_consumption['날짜'].astype(int).astype(str))
+df_consumption['날짜'] = df_consumption['날짜'].astype(int).astype(str).str.strip() ## .str을 쓰는 이유 : df_consumption['날짜']는 series기 때문에 .strip()만 사용하면 에러가 발생한다.
+df_consumption['날짜'] = (                                                         ## .str을 사용하면 '각 행의 문자열마다' 라는 의미가 추가된다.
+    df_consumption['날짜'].str[:4] + '-' +  # 연
+    df_consumption['날짜'].str[4:6] + '-' +  # 월
+    df_consumption['날짜'].str[6:]           # 일
+)
+df_consumption['날짜'] = pd.to_datetime(df_consumption['날짜'], format='%Y-%m-%d')
 df_consumption = df_consumption.query('날짜 >= "2024-06-01" & 날짜 <= "2025-05-30"')
 df = pd.merge(df_consumption, df_weather, on='날짜', how='left')
 
-
-####################### EDA 및 전처리 ##########################
-#print(df.info())
-#print(df.describe())
