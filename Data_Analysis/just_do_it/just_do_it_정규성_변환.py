@@ -54,18 +54,58 @@ from just_do_it_데이터_병합 import df
 # plt.show()
 
 ## box-cox 변환
-boxcox_data, fitted_lambda = boxcox(df['금액'])
+# boxcox_data, fitted_lambda = boxcox(df['금액'])
 
-fig, ax = plt.subplots(1,2, figsize=(12,5))
-sns.histplot(
-    data=df['금액'], ax=ax[0], kde=True
-)
-ax[0].set_title('Before Box-cox')
+# fig, ax = plt.subplots(1,2, figsize=(12,5))
+# sns.histplot(
+#     data=df['금액'], ax=ax[0], kde=True # kde=True --> 곡선 그래프 첨가
+# )
+# ax[0].set_title('Before Box-cox')
 
-sns.histplot(
-    data=boxcox_data, ax=ax[1], kde=True
-)
-ax[1].set_title('After Box-cox')
-plt.show()
+# sns.histplot(
+#     data=boxcox_data, ax=ax[1], kde=True
+# )
+# ax[1].set_title('After Box-cox')
+# plt.show()
 
-print('lambda : ',fitted_lambda)
+# print('lambda : ',fitted_lambda)
+
+
+## Log 변환
+df['log_금액'] = np.log(df['금액'])
+skewness = stats.skew(df['log_금액'])
+#str = f'skewness : {skewness:.3f}'
+# fig, ax = plt.subplots()
+# sns.histplot(
+#     data=df, x='log_금액', kde=True, ax=ax
+# )
+# plt.text(
+#     0.75, 0.95, str,
+#     transform = ax.transAxes
+# )
+# plt.show()
+
+
+## Quantile 변환
+# from sklearn.preprocessing import QuantileTransformer
+# # series를 2d 배열로 변환
+# x = df['금액'].values.reshape(-1,1)
+# # 분위수 변환기 정의
+# qt = QuantileTransformer(output_distribution='normal', random_state=0)
+# # 변환 수행
+# X_transformed = qt.fit_transform(x)
+# # 다시 1차원 Series로 변환
+# S_transformed = pd.Series(X_transformed.flatten(), index=df['금액'].index)
+
+# skewness =  stats.skew(S_transformed)
+# str = f'skewness : {skewness:.2f}'
+
+# fig, ax = plt.subplots()
+# sns.histplot(
+#     data=df, x=S_transformed, ax=ax, kde=True
+# )
+# plt.text(
+#     0.75, 0.95, str,
+#     transform=ax.transAxes
+# )
+# plt.show()
