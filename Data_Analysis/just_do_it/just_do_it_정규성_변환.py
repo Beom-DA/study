@@ -10,10 +10,11 @@ from scipy.stats import norm
 from scipy.stats import probplot
 from scipy.stats import stats
 from scipy.stats import boxcox
+from scipy.stats import skew
 from just_do_it_데이터_병합 import df
 
 
-### 금액
+############## 금액 ################
 ## 히스토그램 및 정규분포 곡선
 # mean_data = df['금액'].mean()
 # min_data = df['금액'].min()
@@ -72,8 +73,8 @@ from just_do_it_데이터_병합 import df
 
 
 ## Log 변환
-df['log_금액'] = np.log(df['금액'])
-skewness = stats.skew(df['log_금액'])
+# df['log_금액'] = np.log(df['금액'])
+# skewness = stats.skew(df['log_금액'])
 #str = f'skewness : {skewness:.3f}'
 # fig, ax = plt.subplots()
 # sns.histplot(
@@ -109,3 +110,31 @@ skewness = stats.skew(df['log_금액'])
 #     transform=ax.transAxes
 # )
 # plt.show()
+
+
+
+
+
+########## 기온 ##############
+
+### Yeo-Johnson Transformation
+
+from sklearn.preprocessing import PowerTransformer
+
+tr = PowerTransformer(method='yeo-johnson')
+transformed = tr.fit_transform(df[['평균기온']]) # fit_transform의 인자는 2차원 형태의 입력만 받는다. 결과값은 2차원 numpy array
+df['transformed_기온'] = transformed.flatten()
+
+skewness = skew(df['transformed_기온'])
+str = f'skewness : {skewness:.2f}'
+
+fig, ax = plt.subplots()
+sns.histplot(
+    data=df, x='transformed_기온', ax=ax, kde=True, bins=50
+)
+plt.text(
+    0.1, 0.95, str,
+    transform = ax.transAxes
+)
+plt.show()
+

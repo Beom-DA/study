@@ -140,5 +140,3 @@
 # fig.show()
 
 
-x = 5.123123
-print("이상치 : {:.2f}".format(x))
