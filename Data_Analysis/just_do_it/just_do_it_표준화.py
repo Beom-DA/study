@@ -117,4 +117,4 @@ scaled_data_wind = scaler.fit_transform(data_wind.values.reshape(-1,1))
 scaled_series_wind = pd.Series(scaled_data_wind.flatten())
 df['scaled_풍속'] = scaled_series_wind
 
-print('중앙값 : ', scaled_series_wind.median())
+#print('중앙값 : ', scaled_series_wind.median())

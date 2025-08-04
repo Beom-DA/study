@@ -14,6 +14,11 @@ fig = px.scatter(
     data_frame=df, x='r_scaled_기온', y='r_scaled_금액',
     width= 700, height=600
 )
+fig.update_layout(
+    xaxis_title='기온',
+    yaxis_title='카드 소비액',
+    title = '기온과 카드 소비액의 관계'
+)
 fig.show()
 
 
