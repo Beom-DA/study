@@ -14,7 +14,19 @@ from scipy.stats import skew
 from just_do_it_데이터_병합 import df
 
 
+if platform.system() == 'Windows':
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+elif platform.system() == 'Darwin':
+    plt.rcParams['font.family'] = 'AppleGothic'
+else:
+    plt.rcParams['font.family'] = 'NanumGothic'
+
+plt.rcParams['axes.unicode_minus'] = False
+
+
+
 ############## 금액 ################
+
 ## 히스토그램 및 정규분포 곡선
 # mean_data = df['금액'].mean()
 # min_data = df['금액'].min()
@@ -73,7 +85,7 @@ from just_do_it_데이터_병합 import df
 
 
 ## Log 변환
-# df['log_금액'] = np.log(df['금액'])
+df['log_금액'] = np.log(df['금액'])
 # skewness = stats.skew(df['log_금액'])
 #str = f'skewness : {skewness:.3f}'
 # fig, ax = plt.subplots()
@@ -119,22 +131,50 @@ from just_do_it_데이터_병합 import df
 
 ### Yeo-Johnson Transformation
 
-from sklearn.preprocessing import PowerTransformer
+# from sklearn.preprocessing import PowerTransformer
 
-tr = PowerTransformer(method='yeo-johnson')
-transformed = tr.fit_transform(df[['평균기온']]) # fit_transform의 인자는 2차원 형태의 입력만 받는다. 결과값은 2차원 numpy array
-df['transformed_기온'] = transformed.flatten()
+# tr = PowerTransformer(method='yeo-johnson')
+# transformed = tr.fit_transform(df[['평균기온']]) # fit_transform의 인자는 2차원 형태의 입력만 받는다. 결과값은 2차원 numpy array
+# df['transformed_기온'] = transformed.flatten()
 
-skewness = skew(df['transformed_기온'])
-str = f'skewness : {skewness:.2f}'
+# skewness = skew(df['transformed_기온'])
+# str = f'skewness : {skewness:.2f}'
 
-fig, ax = plt.subplots()
-sns.histplot(
-    data=df, x='transformed_기온', ax=ax, kde=True, bins=50
-)
-plt.text(
-    0.1, 0.95, str,
-    transform = ax.transAxes
-)
-plt.show()
+# fig, ax = plt.subplots()
+# sns.histplot(
+#     data=df, x='transformed_기온', ax=ax, kde=True, bins=50
+# )
+# plt.text(
+#     0.1, 0.95, str,
+#     transform = ax.transAxes
+# )
+# plt.show()
 
+
+
+
+############ 바람 ##############
+
+data = df['평균풍속']
+boxcox_transformed_data, fitted_lambda = boxcox(data)
+df['boxcox_평균풍속'] = boxcox_transformed_data
+
+# skewness = skew(boxcox_transformed_data)
+# skew_str = f'skewness = {skewness:.2f}'
+# fig, ax = plt.subplots(1, 2, figsize=(12,5))
+# sns.histplot(
+#     data=df, x='boxcox_평균풍속', ax=ax[0], kde=True
+# )
+# ax[0].set_ylabel('갯수')
+# ax[0].set_title('Histogram')
+
+# plt.sca(ax[1])
+# probplot(boxcox_transformed_data, dist='norm', plot=plt)
+# ax[1].set_title('Q-Q Plot')
+# plt.text(
+#     0.05, 0.95, skew_str,
+#     transform = ax[1].transAxes,
+#     bbox=dict(boxstyle='square', facecolor='lightyellow')
+# )
+
+# plt.show()

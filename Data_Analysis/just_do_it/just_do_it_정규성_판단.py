@@ -42,9 +42,67 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 
+################ 강수량 데이터 #####################
+
+# data = df['강수량']
+# skewness = skew(data)
+# skew_str = f'skewness : {skewness:.2f}'
+
+# fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+# sns.histplot(
+#     data=df, x='강수량', ax=ax[0], kde=True, bins=100, binrange=(0, 152)
+# )
+# ax[0].set_ylim(0, 5)
+# ax[0].set_xlim(0, 152)
+# plt.sca(ax[1]) # sca = Set Current Axes
+# probplot(data, dist='norm', plot=plt)
+# plt.show()
 
 
 
 
 
+################ 습도 데이터 #################
 
+# data = df['평균습도']
+# skewness = skew(data)
+# skew_str = f'skewness : {skewness:.2f}'
+
+# fig, ax = plt.subplots(1, 2, figsize=(12,5))
+# sns.histplot(
+#     data=df, x='평균습도', ax=ax[0], kde=True
+# )
+# ax[0].set_ylabel('갯수')
+# ax[0].set_title('Histogram')
+# plt.sca(ax[1])
+# probplot(data, dist='norm', plot=plt)
+# ax[1].set_title('Q-Q Plot')
+# plt.text(
+#     0.05, 0.95, skew_str,
+#     transform = ax[1].transAxes
+# )
+# plt.show()
+
+
+
+############ 바람 #################
+data = df['평균풍속']
+
+skewness = skew(data)
+skew_str = f'skewness : {skewness:.2f}'
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+sns.histplot(
+    data=df, x='평균풍속', ax=ax[0], kde=True, bins=20
+)
+plt.sca(ax[1])
+probplot(data, dist='norm', plot=plt)
+plt.text(
+    0.05, 0.95, skew_str,
+    transform = ax[1].transAxes,
+    bbox=dict(boxstyle='square', facecolor='lightyellow', edgecolor='gray')
+)
+ax[0].set_ylabel('갯수')
+ax[0].set_title('Histogram')
+ax[1].set_title('Q-Q Plot')
+plt.show()

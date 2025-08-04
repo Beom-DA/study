@@ -15,7 +15,7 @@ from just_do_it_정규성_변환 import df
 
 ############### 금액 ###################
 
-### Z-Score Scaling
+# ## Z-Score Scaling
 # from sklearn.preprocessing import StandardScaler
 
 # scaler = StandardScaler()
@@ -26,13 +26,13 @@ from just_do_it_정규성_변환 import df
 
 
 
-### Robust Scaling
-# from sklearn.preprocessing import RobustScaler
+# ## Robust Scaling
+from sklearn.preprocessing import RobustScaler
 
-# r_scaler = RobustScaler()
-# r_scaled_data = r_scaler.fit_transform(df['log_금액'].values.reshape(-1,1))
-# r_scaled_series = pd.Series(r_scaled_data.flatten(), index=df['log_금액'].index)
-# df['r_scaled_금액'] = r_scaled_series
+r_scaler = RobustScaler()
+r_scaled_data = r_scaler.fit_transform(df['log_금액'].values.reshape(-1,1))
+r_scaled_series_money = pd.Series(r_scaled_data.flatten(), index=df['log_금액'].index)
+df['r_scaled_금액'] = r_scaled_series_money
 # print('Robust Scaling median_value : {:.2f}'.format(r_scaled_series.median()))
 
 # fig, ax = plt.subplots(1,2)
@@ -50,21 +50,71 @@ from just_do_it_정규성_변환 import df
 
 
 
-################# 기온 ###################
+# ################ 기온 ###################
+
+# ## Robust Scaling
+# from sklearn.preprocessing import RobustScaler
+
+data_temp = df['평균기온']
+r_scaler = RobustScaler()
+r_scaled_data_temp = r_scaler.fit_transform(data_temp.values.reshape(-1,1))
+r_scaled_series_temp = pd.Series(r_scaled_data_temp.flatten())
+df['r_scaled_기온'] = r_scaled_series_temp
+# print('중앙값 : ', r_scaled_series.median())
+
+# Q3 = r_scaled_series.quantile(0.75)
+# Q1 = r_scaled_series.quantile(0.25)
+
+# IQR = Q3-Q1
+
+# print('IQR : ', IQR)
+
+
+
+
+
+################# 강수량 ########################
 
 ### Robust Scaling
-from sklearn.preprocessing import RobustScaler
+# from sklearn.preprocessing import RobustScaler
 
-data = df['평균기온']
-scaler = RobustScaler()
-r_scaled_data = scaler.fit_transform(data.values.reshape(-1,1))
-r_scaled_series = pd.Series(r_scaled_data.flatten())
+data_rain = df['강수량']
+r_scaler = RobustScaler()
+r_scaled_data_rain = r_scaler.fit_transform(data_rain.values.reshape(-1,1))
+r_scaled_series_rain = pd.Series(r_scaled_data_rain.flatten())
+df['r_scaled_강수량'] = r_scaled_series_rain
 
-print('중앙값 : ', r_scaled_series.median())
+# print('중앙값 : {:.2f}'.format(r_scaled_series.median()))
 
-Q3 = r_scaled_series.quantile(0.75)
-Q1 = r_scaled_series.quantile(0.25)
 
-IQR = Q3-Q1
 
-print('IQR : ', IQR)
+
+################ 습도 ################
+
+### Z-score Scaling
+from sklearn.preprocessing import StandardScaler
+
+data_humidity = df['평균습도']
+scaler = StandardScaler()
+scaled_data_humidity = scaler.fit_transform(data_humidity.values.reshape(-1,1))
+scaled_series_humidity = pd.Series(scaled_data_humidity.flatten())
+df['scaled_습도'] = scaled_series_humidity
+
+# print('중앙값 : ', scaled_series.median())
+
+
+
+
+
+
+
+############## 바람 ################
+#from sklearn.preprocessing import StandardScaler
+
+data_wind = df['boxcox_평균풍속']
+scaler = StandardScaler()
+scaled_data_wind = scaler.fit_transform(data_wind.values.reshape(-1,1))
+scaled_series_wind = pd.Series(scaled_data_wind.flatten())
+df['scaled_풍속'] = scaled_series_wind
+
+print('중앙값 : ', scaled_series_wind.median())
