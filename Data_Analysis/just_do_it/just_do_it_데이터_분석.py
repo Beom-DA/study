@@ -123,45 +123,45 @@ X = df[['r_scaled_기온', 'r_scaled_강수량', 'scaled_습도', 'scaled_풍속
 # plt.show()
 
 ### VIF 확인
-from statsmodels.stats.outliers_influence import variance_inflation_factor
-from statsmodels.tools.tools import add_constant
+# from statsmodels.stats.outliers_influence import variance_inflation_factor
+# from statsmodels.tools.tools import add_constant
 
-X = add_constant(X)
+# X = add_constant(X)
 
-vif_data = pd.DataFrame()
-vif_data["변수"] = X.columns
-vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+# vif_data = pd.DataFrame()
+# vif_data["변수"] = X.columns
+# vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
 
-print(vif_data)
+# print(vif_data)
 
 
 
 
 ############## 날씨와 카드 소비량에 대한 다항 회귀 ###############
-# from sklearn.linear_model import LinearRegression
-# from sklearn.preprocessing import PolynomialFeatures
-# from sklearn.metrics import r2_score
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import r2_score
 
-# x = df[['r_scaled_기온','r_scaled_강수량','scaled_습도','scaled_풍속']]
-# y = df['r_scaled_금액']
+x = df[['r_scaled_기온','r_scaled_강수량','scaled_습도','scaled_풍속']]
+y = df['r_scaled_금액']
 
-# poly2 = PolynomialFeatures(degree=3, include_bias=False)
-# x_poly2 = poly2.fit_transform(x)
-# model2 = LinearRegression().fit(x_poly2, y)
+poly2 = PolynomialFeatures(degree=2, include_bias=False)
+x_poly2 = poly2.fit_transform(x)
+model2 = LinearRegression().fit(x_poly2, y)
 
-# feature_names = poly2.get_feature_names_out(x.columns)
+feature_names = poly2.get_feature_names_out(x.columns)
 
-# coefficients = model2.coef_   # --> 회귀계수
-# intercept = model2.intercept_
+coefficients = model2.coef_   # --> 회귀계수
+intercept = model2.intercept_
 
-# coef_df = pd.DataFrame({
-#     '항목' : feature_names,
-#     '회귀계수' : coefficients
-# })
+coef_df = pd.DataFrame({
+    '항목' : feature_names,
+    '회귀계수' : coefficients
+})
 
-# coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
-# #print(coef_df)
+coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
+print(coef_df)
 
-# y_pred2 = model2.predict(x_poly2)
-# r2 = r2_score(y,y_pred2)
-# print('r^2 score : ', r2)
+y_pred2 = model2.predict(x_poly2)
+r2 = r2_score(y,y_pred2)
+print('r^2 score : ', r2)
