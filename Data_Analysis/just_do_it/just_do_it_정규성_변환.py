@@ -87,7 +87,7 @@ plt.rcParams['axes.unicode_minus'] = False
 ## Log 변환
 df['log_금액'] = np.log(df['금액'])
 # skewness = stats.skew(df['log_금액'])
-#str = f'skewness : {skewness:.3f}'
+# str = f'skewness : {skewness:.3f}'
 # fig, ax = plt.subplots()
 # sns.histplot(
 #     data=df, x='log_금액', kde=True, ax=ax
@@ -153,11 +153,11 @@ df['log_금액'] = np.log(df['금액'])
 
 
 
-############ 바람 ##############
+############ 풍속 ##############
 
-data = df['평균풍속']
+data = df['풍속']
 boxcox_transformed_data, fitted_lambda = boxcox(data)
-df['boxcox_평균풍속'] = boxcox_transformed_data
+df['boxcox_풍속'] = boxcox_transformed_data
 
 # skewness = skew(boxcox_transformed_data)
 # skew_str = f'skewness = {skewness:.2f}'

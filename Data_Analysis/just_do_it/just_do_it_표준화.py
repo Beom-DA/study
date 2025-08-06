@@ -55,7 +55,7 @@ df['r_scaled_금액'] = r_scaled_series_money
 # ## Robust Scaling
 # from sklearn.preprocessing import RobustScaler
 
-data_temp = df['평균기온']
+data_temp = df['기온']
 r_scaler = RobustScaler()
 r_scaled_data_temp = r_scaler.fit_transform(data_temp.values.reshape(-1,1))
 r_scaled_series_temp = pd.Series(r_scaled_data_temp.flatten())
@@ -94,7 +94,7 @@ df['r_scaled_강수량'] = r_scaled_series_rain
 ### Z-score Scaling
 from sklearn.preprocessing import StandardScaler
 
-data_humidity = df['평균습도']
+data_humidity = df['습도']
 scaler = StandardScaler()
 scaled_data_humidity = scaler.fit_transform(data_humidity.values.reshape(-1,1))
 scaled_series_humidity = pd.Series(scaled_data_humidity.flatten())
@@ -111,7 +111,7 @@ df['scaled_습도'] = scaled_series_humidity
 ############## 바람 ################
 #from sklearn.preprocessing import StandardScaler
 
-data_wind = df['boxcox_평균풍속']
+data_wind = df['boxcox_풍속']
 scaler = StandardScaler()
 scaled_data_wind = scaler.fit_transform(data_wind.values.reshape(-1,1))
 scaled_series_wind = pd.Series(scaled_data_wind.flatten())

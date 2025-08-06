@@ -110,7 +110,7 @@ from scipy.stats import pearsonr
 
 ################ 독립변수끼리의 다중공신성 확인 #################
 
-X = df[['r_scaled_기온', 'r_scaled_강수량', 'scaled_습도', 'scaled_풍속']]
+# X = df[['r_scaled_기온', 'r_scaled_강수량', 'scaled_습도', 'scaled_풍속']]
 
 # 상관계수 행렬 계산 (피어슨 상관계수 기본)
 # corr_matrix = X.corr()
@@ -138,30 +138,62 @@ X = df[['r_scaled_기온', 'r_scaled_강수량', 'scaled_습도', 'scaled_풍속
 
 
 ############## 날씨와 카드 소비량에 대한 다항 회귀 ###############
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.metrics import r2_score
+# from sklearn.linear_model import LinearRegression
+# from sklearn.preprocessing import PolynomialFeatures
+# from sklearn.metrics import r2_score
 
-x = df[['r_scaled_기온','r_scaled_강수량','scaled_습도','scaled_풍속']]
-y = df['r_scaled_금액']
+# x = df[['r_scaled_기온','r_scaled_강수량','scaled_습도','scaled_풍속']]
+# y = df['r_scaled_금액']
 
-poly2 = PolynomialFeatures(degree=2, include_bias=False)
-x_poly2 = poly2.fit_transform(x)
-model2 = LinearRegression().fit(x_poly2, y)
+# poly2 = PolynomialFeatures(degree=2, include_bias=False)
+# x_poly2 = poly2.fit_transform(x)
+# model2 = LinearRegression().fit(x_poly2, y)
 
-feature_names = poly2.get_feature_names_out(x.columns)
+# feature_names = poly2.get_feature_names_out(x.columns)
 
-coefficients = model2.coef_   # --> 회귀계수
-intercept = model2.intercept_
+# coefficients = model2.coef_   # --> 회귀계수
+# intercept = model2.intercept_
 
-coef_df = pd.DataFrame({
-    '항목' : feature_names,
-    '회귀계수' : coefficients
-})
+# coef_df = pd.DataFrame({
+#     '항목' : feature_names,
+#     '회귀계수' : coefficients
+# })
 
-coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
-print(coef_df)
+# coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
+# print(coef_df)
 
-y_pred2 = model2.predict(x_poly2)
-r2 = r2_score(y,y_pred2)
-print('r^2 score : ', r2)
+# y_pred2 = model2.predict(x_poly2)
+# r2 = r2_score(y,y_pred2)
+# print('r^2 score : ', r2)
+
+
+
+
+################# Spline Regression ####################
+# import statsmodels.api as sm
+# from patsy import dmatrix
+
+# list = ['r_scaled_기온','r_scaled_강수량','scaled_습도','scaled_풍속']
+
+# fig, ax = plt.subplots(1, 4, figsize = (20, 5))
+
+# for i in range(len(list)):
+#     x = df[list[i]]
+#     spline_basis = dmatrix('bs(x, df=4, degree=3, include_intercept=False)', {'x': x}, return_type='dataframe')
+#     model = sm.OLS(df['r_scaled_금액'], spline_basis).fit()
+#     y_pred = model.predict(spline_basis)
+
+#     plt.sca(ax[i])
+#     sns.scatterplot(
+#         data=df, x=list[i], y='r_scaled_금액',ax=ax[i]
+#     )
+#     sns.lineplot(
+#         data=df, x=list[i], y=y_pred, ax=ax[i], color='green', label='스플라인 추세선'
+#     )
+#     plt.title('Spline Regression')
+#     plt.legend()
+#     print(model.summary())
+# plt.show()
+
+
+print(df.head(5))
