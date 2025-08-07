@@ -118,3 +118,6 @@ scaled_series_wind = pd.Series(scaled_data_wind.flatten())
 df['scaled_풍속'] = scaled_series_wind
 
 #print('중앙값 : ', scaled_series_wind.median())
+
+
+print(df.isna().sum()[df.isna().sum() > 0])

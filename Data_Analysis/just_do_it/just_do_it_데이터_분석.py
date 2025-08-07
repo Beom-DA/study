@@ -196,4 +196,36 @@ from scipy.stats import pearsonr
 # plt.show()
 
 
-print(df.head(5))
+
+
+
+
+
+############## 모든 변수들과 카드 소비량에 대한 다항 회귀 ###############
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.metrics import r2_score
+
+x = df.drop(columns=['r_scaled_금액','날짜'])
+y = df['r_scaled_금액']
+
+poly2 = PolynomialFeatures(degree=2, include_bias=False)
+x_poly2 = poly2.fit_transform(x)
+model2 = LinearRegression().fit(x_poly2, y)
+
+feature_names = poly2.get_feature_names_out(x.columns)
+
+coefficients = model2.coef_   # --> 회귀계수
+intercept = model2.intercept_
+
+coef_df = pd.DataFrame({
+    '항목' : feature_names,
+    '회귀계수' : coefficients
+})
+
+coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
+#print(coef_df)
+
+y_pred2 = model2.predict(x_poly2)
+r2 = r2_score(y,y_pred2)
+print('r^2 score : ', r2)

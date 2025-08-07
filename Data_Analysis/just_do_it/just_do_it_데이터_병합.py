@@ -103,3 +103,7 @@ df = df_encoded
 df = df[df['금액'] > 0]
 #print((df['금액']<=0).sum())
 
+#print(df['성별_M'].value_counts())
+
+
+
