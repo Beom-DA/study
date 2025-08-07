@@ -120,4 +120,22 @@ df['scaled_풍속'] = scaled_series_wind
 #print('중앙값 : ', scaled_series_wind.median())
 
 
-print(df.isna().sum()[df.isna().sum() > 0])
+# NaN값 찾기
+#print(df.isna().sum()[df.isna().sum() > 0])
+
+# print(df[df['r_scaled_기온'].isna()])
+# print(df[df['r_scaled_강수량'].isna()])
+
+df = df.dropna()
+#print(df.isna().sum()[df.isna().sum() > 0])
+#print(df.info())
+
+
+df_1 = df.drop(['기온','강수량','풍속','습도', 'log_금액', 'boxcox_풍속', '금액'], axis=1)
+#print(df_1.info)
+#--> df_1은 11개 컬럼
+
+#### 원-핫 인코딩
+category_col = ['물품분류', '시간', '성별', '나이', '요일']
+df_encoded = pd.get_dummies(df_1, columns=category_col, drop_first=True)
+df = df_encoded

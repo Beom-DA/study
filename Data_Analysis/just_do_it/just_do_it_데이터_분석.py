@@ -202,30 +202,53 @@ from scipy.stats import pearsonr
 
 
 ############## 모든 변수들과 카드 소비량에 대한 다항 회귀 ###############
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.metrics import r2_score
+# from sklearn.linear_model import LinearRegression
+# from sklearn.preprocessing import PolynomialFeatures
+# from sklearn.metrics import r2_score
+# from sklearn.decomposition import PCA
 
-x = df.drop(columns=['r_scaled_금액','날짜'])
+# x = df.drop(columns=['날짜'])
+# y = df['r_scaled_금액']
+
+# PCA = PCA(n_components=10)
+# x_reduced = PCA.fit_transform(x)
+
+# poly2 = PolynomialFeatures(degree=2, include_bias=False)
+# x_poly2 = poly2.fit_transform(x_reduced)
+# model2 = LinearRegression().fit(x_poly2, y)
+
+# feature_names = poly2.get_feature_names_out(x_reduced.columns)
+
+# coefficients = model2.coef_   # --> 회귀계수
+# intercept = model2.intercept_
+
+# coef_df = pd.DataFrame({
+#     '항목' : feature_names,
+#     '회귀계수' : coefficients
+# })
+
+# coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
+# print(coef_df)
+
+# y_pred2 = model2.predict(x_poly2)
+# r2 = r2_score(y,y_pred2)
+# print('r^2 score : ', r2)
+# --> r^2 score :  0.8028264310563126
+
+
+
+################ 트리 기반 모델 변수 중요도를 활용한 다항 회귀 (RandomForest) ################
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+
+x = df.drop(columns=['날짜'])
 y = df['r_scaled_금액']
 
-poly2 = PolynomialFeatures(degree=2, include_bias=False)
-x_poly2 = poly2.fit_transform(x)
-model2 = LinearRegression().fit(x_poly2, y)
+rf = RandomForestRegressor()
+rf.fit(x, y)
 
-feature_names = poly2.get_feature_names_out(x.columns)
+importances = rf.feature_importances_ # 변수 중요도는 각 변수별 0~1 사이 값이며, 합은 1이 됩니다
+feature_importance = pd.Series(importances, index=x.columns).sort_values(ascending=False)
 
-coefficients = model2.coef_   # --> 회귀계수
-intercept = model2.intercept_
+print(feature_importance)
 
-coef_df = pd.DataFrame({
-    '항목' : feature_names,
-    '회귀계수' : coefficients
-})
-
-coef_df = coef_df.sort_values(by='회귀계수', ascending=False)
-#print(coef_df)
-
-y_pred2 = model2.predict(x_poly2)
-r2 = r2_score(y,y_pred2)
-print('r^2 score : ', r2)

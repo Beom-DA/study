@@ -89,21 +89,42 @@ print("걸린 시간 : {:.2f}".format(end_time - start_time))'''
 # df = pd.merge(df_consumption, df_weather, on='날짜', how='left')
 
 df = pd.read_csv(r'Data/통합데이터.csv')
+df = df.copy()
 df['날짜'] = pd.to_datetime(df['날짜'], format='%Y-%m-%d')
 df['강수량'] = df['강수량'].fillna(0)
 #print(df['강수량'].info())
 
 
 ### 원-핫 인코딩
-category_col = ['물품분류', '시간', '성별', '나이', '요일']
-df_encoded = pd.get_dummies(df, columns=category_col, drop_first=True)
-df = df_encoded
+# category_col = ['물품분류', '시간', '성별', '나이', '요일']
+# df_encoded = pd.get_dummies(df, columns=category_col, drop_first=True)
+# df = df_encoded
 
 # 금액이 0인 데이터에 대해 삭제
 df = df[df['금액'] > 0]
 #print((df['금액']<=0).sum())
 
 #print(df['성별_M'].value_counts())
+
+#print((df['물품분류'].value_counts() < 120000).sum()) #--> 53개
+
+# count = df['물품분류'].value_counts()
+# items = count[count >= 200000].index
+# df['물품분류'] = df['물품분류'].apply(lambda x: x if x in items else '기타')
+# print(df['물품분류'].value_counts())
+
+
+threshold_ratio = 0.10
+total_count = len(df)
+value_counts = df['물품분류'].value_counts()
+
+cumulative = value_counts.cumsum()
+num_items = (cumulative / total_count <= 1 - threshold_ratio).sum()
+
+top_items = value_counts.head(num_items).index
+df['물품분류'] = df['물품분류'].apply(lambda x: x if x in top_items else '기타')
+#print(df['물품분류'].value_counts())
+
 
 
 

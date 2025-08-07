@@ -13,7 +13,6 @@ from scipy.stats import boxcox
 from scipy.stats import skew
 from just_do_it_데이터_병합 import df
 
-
 if platform.system() == 'Windows':
     plt.rcParams['font.family'] = 'Malgun Gothic'
 elif platform.system() == 'Darwin':
@@ -85,7 +84,8 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 ## Log 변환
-df['log_금액'] = np.log(df['금액'])
+df_copy = df['금액']
+df['log_금액'] = np.log(df_copy)
 # skewness = stats.skew(df['log_금액'])
 # str = f'skewness : {skewness:.3f}'
 # fig, ax = plt.subplots()
