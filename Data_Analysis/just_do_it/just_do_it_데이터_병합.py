@@ -104,28 +104,20 @@ df['강수량'] = df['강수량'].fillna(0)
 df = df[df['금액'] > 0]
 #print((df['금액']<=0).sum())
 
-#print(df['성별_M'].value_counts())
 
-#print((df['물품분류'].value_counts() < 120000).sum()) #--> 53개
+### '기타'에 해당하는 데이터가 10%가 되게 데이터 처리
+# threshold_ratio = 0.10
+# total_count = len(df)
+# value_counts = df['물품분류'].value_counts()
 
-# count = df['물품분류'].value_counts()
-# items = count[count >= 200000].index
-# df['물품분류'] = df['물품분류'].apply(lambda x: x if x in items else '기타')
-# print(df['물품분류'].value_counts())
+# cumulative = value_counts.cumsum()
+# num_items = (cumulative / total_count <= 1 - threshold_ratio).sum()
 
-
-threshold_ratio = 0.10
-total_count = len(df)
-value_counts = df['물품분류'].value_counts()
-
-cumulative = value_counts.cumsum()
-num_items = (cumulative / total_count <= 1 - threshold_ratio).sum()
-
-top_items = value_counts.head(num_items).index
-df['물품분류'] = df['물품분류'].apply(lambda x: x if x in top_items else '기타')
+# top_items = value_counts.head(num_items).index
+# df['물품분류'] = df['물품분류'].apply(lambda x: x if x in top_items else '기타')
 #print(df['물품분류'].value_counts())
 
-print(df.info())
+#print(df.info())
 
 
 

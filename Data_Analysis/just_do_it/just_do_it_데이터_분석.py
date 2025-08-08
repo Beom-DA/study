@@ -204,14 +204,15 @@ from scipy.stats import pearsonr
 ############## 모든 변수들과 카드 소비량에 대한 다항 회귀 ###############
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-from sklearn.decomposition import PCA
 
-x = df.drop(columns=['날짜','물품분류_기타'])
+
+x = df.drop(columns=['r_scaled_금액'])
 y = df['r_scaled_금액']
 
 
-poly2 = PolynomialFeatures(degree=2, include_bias=False, interaction_only=True) #interaction_only=True --> 상호작용 항만 사용
+poly2 = PolynomialFeatures(degree=3, include_bias=False) #interaction_only=True --> 상호작용 항만 사용
 x_poly2 = poly2.fit_transform(x)
 model2 = LinearRegression().fit(x_poly2, y)
 

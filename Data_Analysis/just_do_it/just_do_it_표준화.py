@@ -131,11 +131,19 @@ df = df.dropna()
 #print(df.info())
 
 
-df_1 = df.drop(['기온','강수량','풍속','습도', 'log_금액', 'boxcox_풍속', '금액'], axis=1)
+df_1 = df.drop(['날짜', '기온','강수량','풍속','습도', 'log_금액', 'boxcox_풍속', '금액', '물품분류'], axis=1)
 #print(df_1.info)
 #--> df_1은 11개 컬럼
 
+#### 샘플링
+# from sklearn.model_selection import train_test_split
+# df_sample, _ = train_test_split(df, stratify=df['물품분류','시간','성별','나이','요일'].astype(str), train_size=500000, random_state=42)
+df_sample = df_1.sample(n=500000, random_state=42)
+
+
 #### 원-핫 인코딩
-category_col = ['물품분류', '시간', '성별', '나이', '요일']
-df_encoded = pd.get_dummies(df_1, columns=category_col, drop_first=True)
+category_col = ['시간', '성별', '나이', '요일']
+df_encoded = pd.get_dummies(df_sample, columns=category_col, drop_first=True)
 df = df_encoded
+
+#print(df.info())
