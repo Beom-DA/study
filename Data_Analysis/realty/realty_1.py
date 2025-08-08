@@ -27,6 +27,11 @@ df_last = df_last.drop(columns=['규모구분','분양가격(㎡)'])
 # print(df_last.groupby(['전용면적'])['평당분양가격'].mean())
 #print(df_last.groupby(['지역명','전용면적'])['평당분양가격'].mean().unstack().round()) # unstack()은 groupby의 인자중 뒤에 있는 변수를 컬럼명으로 지정
 # .transpose() 는 행과 열을 바꿈
+# groupby의 연산 결과는 Series 형태로 나옴
 
-pt = pd.pivot_table(data=df_last, index=['지역명'], values=['평당분양가격']) #aggfunc을 지정하지 않으면 디폴트 값은 mean값
-print(pt)
+#pt = pd.pivot_table(data=df_last, index=['지역명'], values=['평당분양가격']) #aggfunc을 지정하지 않으면 디폴트 값은 mean값
+#print(pt)
+# pivot_table의 연산 결과는 DataFrame 형태로 나옴
+pt = pd.pivot_table(data=df_last, index='전용면적', values='평당분양가격')
+pt1 = df_last.pivot_table(index='전용면적', columns='지역명', values='평당분양가격')
+df_last.pivot_table(index=['연도','지역명'], values='평당분양가격')
