@@ -125,6 +125,8 @@ top_items = value_counts.head(num_items).index
 df['물품분류'] = df['물품분류'].apply(lambda x: x if x in top_items else '기타')
 #print(df['물품분류'].value_counts())
 
+print(df.info())
+
 
 
 
