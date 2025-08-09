@@ -35,3 +35,5 @@ df_last = df_last.drop(columns=['규모구분','분양가격(㎡)'])
 pt = pd.pivot_table(data=df_last, index='전용면적', values='평당분양가격')
 pt1 = df_last.pivot_table(index='전용면적', columns='지역명', values='평당분양가격')
 df_last.pivot_table(index=['연도','지역명'], values='평당분양가격')
+
+
