@@ -8,12 +8,12 @@ def get_conetents(file_list):
     y_class = []
     X_text = []
     class_dict = {
-        1: "0", 2: "0", 3:"0", 4:"0", 5:"1", 6:"1", 7:"1", 8:"1"}
+        1: "0", 2: "0", 3:"0", 4:"0", 5:"1", 6:"1", 7:"1", 8:"1"} # 야구는 0 축구는 1
 
     for file_name in file_list:
         try:
             f = open(file_name, "r",  encoding="cp949")
-            category = int(file_name.split(os.sep)[1].split("_")[0])
+            category = int(file_name.split(os.sep)[1].split("_")[0]) #os.sep : / or \
             y_class.append(class_dict[category])
             X_text.append(f.read())
             f.close()
@@ -24,19 +24,19 @@ def get_conetents(file_list):
 
 
 
-def get_cleaned_text(text):
+def get_cleaned_text(word):
     import re
-    text = re.sub('\W+','', text.lower() )
-    return text
+    word = re.sub('\W+','', word.lower() ) # 의미없는 문장부호 제거(전처리) 예) love. --> love
+    return word
 
 
 def get_corpus_dict(text):
     text = [sentence.split() for sentence in text]
-    clenad_words = [get_cleaned_text(word) for words in text for word in words]
+    cleaned_words = [get_cleaned_text(word) for words in text for word in words]
 
     from collections import OrderedDict
     corpus_dict = OrderedDict()
-    for i, v in enumerate(set(clenad_words)):
+    for i, v in enumerate(set(cleaned_words)):
         corpus_dict[v] = i
     return corpus_dict
 
@@ -85,9 +85,9 @@ def get_accuracy(similarity_list, y_class, source_news):
 
 
 if __name__ == "__main__":
-    dir_name = "news_data"
+    dir_name = "data"
     file_list = get_file_list(dir_name)
-    file_list = [os.path.join(dir_name, file_name) for file_name in file_list]
+    file_list = [os.path.join(dir_name, file_name) for file_name in file_list] # windows : \ , Linux,Mac : /  --> os.path.을 사용하면 OS에 맞게 경로코드를 맞춰줌
 
     X_text, y_class = get_conetents(file_list)
 
