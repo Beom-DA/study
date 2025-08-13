@@ -1,3 +1,11 @@
+
+############# Enumnerate ##############
+
+
+############# Zip ##############
+
+
+############# MapReduce ##############
 from functools import reduce
 print(reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]))
 def factorial(n):
@@ -6,3 +14,6 @@ def factorial(n):
 
 
 print(factorial(5))
+
+############# Asterisk ##############
+
