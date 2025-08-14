@@ -133,12 +133,12 @@ def matrix_addition(*matrix_variables):
         return [[sum(value) for value in zip(*matrix)] for matrix in zip(*matrix_variables)]
 
 # 실행결과
-matrix_x = [[2, 2], [2, 2]]
-matrix_y = [[2, 5], [2, 1]]
-matrix_z = [[2, 4], [5, 3]]
+# matrix_x = [[2, 2], [2, 2]]
+# matrix_y = [[2, 5], [2, 1]]
+# matrix_z = [[2, 4], [5, 3]]
 
-print (matrix_addition(matrix_x, matrix_y)) # Expected value: [[4, 7], [4, 3]]
-print (matrix_addition(matrix_x, matrix_y, matrix_z)) # Expected value: [[6, 11], [9, 6]]
+# print (matrix_addition(matrix_x, matrix_y)) # Expected value: [[4, 7], [4, 3]]
+# print (matrix_addition(matrix_x, matrix_y, matrix_z)) # Expected value: [[6, 11], [9, 6]]
 
 
 
@@ -158,6 +158,25 @@ def matrix_subtraction(*matrix_variables):
     if matrix_size_check(*matrix_variables) == False:
         raise ArithmeticError
     return None
+
+# 실행결과
+matrix_x = [[2, 2], [2, 2]]
+matrix_y = [[2, 5], [2, 1]]
+matrix_z = [[2, 4], [5, 3]]
+
+print (matrix_subtraction(matrix_x, matrix_y)) # Expected value: [[0, -3], [0, 1]]
+print (matrix_subtraction(matrix_x, matrix_y, matrix_z)) # Expected value: [[-2, -7], [-5, -2]]
+
+
+
+
+
+
+
+
+
+
+
 
 
 def matrix_transpose(matrix_variable):
