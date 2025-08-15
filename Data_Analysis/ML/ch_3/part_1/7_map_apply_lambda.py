@@ -33,9 +33,10 @@ s2 = Series(np.arange(10,20))
 s1.map(s2)
 
 
-!wget https://raw.githubusercontent.com/rstudio/Intro/master/data/wages.csv
-df = pd.read_csv("./data/wages.csv")
-df.head()
+
+#df = pd.read_csv("./data/wages.csv")
+df = pd.read_csv(r'wages.csv')
+print(df.head())
 
 df.sex.unique()
 
