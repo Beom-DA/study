@@ -59,7 +59,7 @@ files.remove("excel-comp-data.xlsx")
 files.remove('df_routes.xlsx')
 
 
-df_list = [pd.read_excel("data/"+df_filename) for df_filename in files]
+df_list = [pd.read_excel(df_filename) for df_filename in files]
 status = df_list[0]
 sales = pd.concat(df_list[1:])
 status.head()

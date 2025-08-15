@@ -9,8 +9,8 @@ df_phone.pivot_table(["duration"],
                      index=[df_phone.month,df_phone.item], 
                      columns=df_phone.network, aggfunc="sum", fill_value=0)
 
-df_movie = pd.read_csv("data/movie_rating.csv")
-df_movie.head()
+df_movie = pd.read_csv("movie_rating.csv")
+print(df_movie.head())
 
 
 
