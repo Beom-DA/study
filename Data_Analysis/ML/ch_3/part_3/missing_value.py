@@ -14,13 +14,13 @@ df.isnull().sum() / len(df)
 
 df_no_missing = df.dropna()
 
-df_cleaned = df.dropna(how='all')
+df_cleaned = df.dropna(how='all') # 모든 열의 값이 null인 행을 지워라
 
 df['location'] = np.nan
 
-df.dropna(axis=1, how='all')
+df.dropna(axis=1, how='all') 
 
-df.dropna(axis=0, thresh=1)
+df.dropna(axis=0, thresh=1) #데이터가 최소 2개 이상 없을때 drop
 
 
 
