@@ -22,10 +22,11 @@ def n_size_ndarray_creation(n, dtype=int):
 
 def zero_or_one_or_empty_ndarray(shape, type=0, dtype=int):
     if type == 0:
-        X = np.zeros(shape, dtype=int)
+        return np.zeros(shape, dtype=dtype)
+    elif type == 1:
+        return np.ones(shape, dtype=dtype)
     else:
-        X = np.ones(shape, dtype=int)
-    return X
+        return np.empty(shape, dtype=dtype)
 
 
 #print(zero_or_one_or_empty_ndarray(shape=(2,2), type=1))
@@ -100,15 +101,25 @@ def concat_ndarray(X_1, X_2, axis):
 
 
 def normalize_ndarray(X, axis=99, dtype=np.float32):
+    # if axis == 0:
+    #     row_mean = X.mean(axis=0, keepdims = True)
+    #     row_std = X.std(axis=0, keepdims = True)
+    #     return (X-row_mean) / row_std
+    # elif axis == 1:
+    #     col_mean = X.mean(axis=1, keepdims = True)
+    #     col_std = X.std(axis=1, keepdims = True)
+    #     return (X-col_mean) / col_std
+    # else :
+    #     return (X-X.mean()) / X.std()
+    n_row, n_column = X.shape
     if axis == 0:
-        row_mean = X.mean(axis=0, keepdims = True)
-        row_std = X.std(axis=0, keepdims = True)
+        row_mean = np.mean(X,0).reshape(1,-1)
+        row_std = np.std(X,0).reshape(1,-1)
         return (X-row_mean) / row_std
     elif axis == 1:
-        col_mean = X.mean(axis=1, keepdims = True)
-        col_std = X.std(axis=1, keepdims = True)
+        col_mean = np.mean(X,1).reshape(n_row,-1)
+        col_std = np.std(X,1).reshape(n_row,-1)
         return (X-col_mean) / col_std
-        return 
     else :
         return (X-X.mean()) / X.std()
 
@@ -150,7 +161,7 @@ filename = "test.npy"
 
 
 def boolean_index(X, condition):
-    return X[eval(str('X') + condition)]
+    return np.where(eval(str('X') + condition))
 
 # X = np.arange(32, dtype=np.float32).reshape(4, -1)
 # print(boolean_index(X, "== 3"))
@@ -170,10 +181,11 @@ def boolean_index(X, condition):
 
 
 def find_nearest_value(X, target_value):
-    arr = np.full((len(X),), target_value)
-    diff = abs(X-arr)
-    index = np.where(diff == diff.min()) 
-    return X[index]
+    # arr = np.full((len(X),), target_value)
+    # diff = abs(X-arr)
+    # index = np.where(diff == diff.min()) 
+    # return X[index]
+    return X[np.argmin(np.abs(X-target_value))] # argmin은 min 값의 index를 불러옴
 
 # X = np.random.uniform(0, 1, 100)
 # target_value = 0.3
@@ -188,8 +200,9 @@ def find_nearest_value(X, target_value):
 
 
 def get_n_largest_values(X, n):
-    X = np.sort(X)[::-1]
-    return X[:n]
+    # X = np.sort(X)[::-1]
+    # return X[:n]
+    return X[np.argsort(X[::-1])[:n]]
 
 X = np.random.uniform(0, 1, 100)
 print(get_n_largest_values(X, 3))
