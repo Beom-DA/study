@@ -1,13 +1,21 @@
 import numpy as np
 
 
-def n_size_ndarray_creation(n, dtype=np.int):
-    
-    pass
+def n_size_ndarray_creation(n, dtype=int):
+    X = np.arange(n**2, dtype=int).reshape(n,n)
+    return X
+
+#print(n_size_ndarray_creation(3))
 
 
-def zero_or_one_or_empty_ndarray(shape, type=0, dtype=np.int):
-    pass
+def zero_or_one_or_empty_ndarray(shape, type=0, dtype=int):
+    if type == 0:
+        X = np.zeros(shape, dtype=int)
+    else:
+        X = np.ones(shape, dtype=int)
+    return X
+
+print(zero_or_one_or_empty_ndarray(shape=(2,2), type=1))
 
 
 def change_shape_of_ndarray(X, n_row):

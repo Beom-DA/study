@@ -23,8 +23,7 @@ df["B"] = ( df["B"] - df["B"].mean() )  \
    
 
 
-def feture_scaling(df, scaling_strat
-egy="min-max", column=None):
+def feture_scaling(df, scaling_strategy="min-max", column=None):
     if column == None:
         column = [column_name for column_name in df.columns]
     for column_name in column:
@@ -36,6 +35,7 @@ egy="min-max", column=None):
                                df[column_name].mean() ) /\
                             (df[column_name].std() )
     return df
+
 df = pd.DataFrame({'A':[14.00,90.20,90.95,96.27,91.21],'B':[103.02,107.26,110.35,114.23,114.68], 'C':['big','small','big','small','small']})
 
 
