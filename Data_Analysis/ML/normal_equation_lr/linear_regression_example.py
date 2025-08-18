@@ -14,4 +14,4 @@ lr.fit(X, y)
 
 print(lr.intercept)
 print(lr.coef)
-print(lr.predict(X)[:10])
+print(lr.predict(X)[:10])  

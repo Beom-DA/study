@@ -59,7 +59,7 @@ class LinearRegression(object):
         else:
             w = self._coef
         
-        return np.dot(test_X,w)
+        return np.dot(test_X,w)  
         """
         적합된 Linear regression 모델을 사용하여 입력된 Matrix X의 예측값을 반환한다.
         이 때, 입력된 Matrix X는 별도의 전처리가 없는 상태로 입력되는 걸로 가정한다.
