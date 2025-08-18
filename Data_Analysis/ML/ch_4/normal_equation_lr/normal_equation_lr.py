@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class LinearRegression(object):
     def __init__(self, fit_intercept=True, copy_X=True): # '__" : 외부에서 절대 접근 불가한 name mangling
         self.fit_intercept = fit_intercept # fit_intercept는 절편을 학습시킬것인가 말것인가를 선택하는 인자. False로 두면 절편은 0으로 고정
@@ -78,7 +77,6 @@ class LinearRegression(object):
         y : numpy array, 예측된 값을 1차원 vector 형태로 [n_predicted_targets]의
             구조를 가진다.
         """
-        return None
 
     @property
     def coef(self):
