@@ -88,10 +88,10 @@ print("걸린 시간 : {:.2f}".format(end_time - start_time))'''
 # df_consumption = df_consumption.query('날짜 >= "2024-06-01" & 날짜 <= "2025-05-30"')
 # df = pd.merge(df_consumption, df_weather, on='날짜', how='left')
 
-df = pd.read_csv(r'Data/통합데이터.csv')
-df = df.copy()
+df_init = pd.read_csv(r'Data/통합데이터.csv')
+df = df_init.copy()
 df['날짜'] = pd.to_datetime(df['날짜'], format='%Y-%m-%d')
-df['강수량'] = df['강수량'].fillna(0)
+df['강수량'] = df['강수량'].fillna('No Rain')
 #print(df['강수량'].info())
 
 
@@ -117,8 +117,16 @@ df = df[df['금액'] > 0]
 # df['물품분류'] = df['물품분류'].apply(lambda x: x if x in top_items else '기타')
 #print(df['물품분류'].value_counts())
 
-#print(df.info())
+#print(df['물품분류'].unique())
+#print(len(df))
 
+df = df.drop(columns= ['물품분류', '금액'])
+df['count'] = 1
+#print(df.head())
+#print(df['날짜'].max())
 
+grouped = pd.DataFrame(df.groupby(['날짜','시간'])['count'].agg('sum'))
+pd.set_option("display.max_rows", 100)
+print(grouped.head(70))
 
 
