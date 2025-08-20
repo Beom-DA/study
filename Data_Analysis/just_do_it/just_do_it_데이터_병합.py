@@ -125,8 +125,17 @@ df['count'] = 1
 #print(df.head())
 #print(df['날짜'].max())
 
-grouped = pd.DataFrame(df.groupby(['날짜','시간'])['count'].agg('sum'))
-pd.set_option("display.max_rows", 100)
-print(grouped.head(70))
+#grouped = pd.DataFrame(df.groupby(['날짜','시간'])['count'].agg('sum'))
+# pd.set_option("display.max_rows", 100)
+# print(grouped.head(70))
 
+
+########### sampling ############
+from sklearn.model_selection import train_test_split
+one_week = df[df['날짜'].between('2024-06-01', '2024-6-07')]
+sample_df, _ = train_test_split(one_week, train_size=50000, stratify=one_week['요일'], random_state=42)
+
+
+pd.DataFrame(sample_df.groupby('기온')['count'].agg('sum').reset_index()).plot(x='기온', y='count', kind='scatter', title = '기온 VS 매출건수')
+plt.show()
 
