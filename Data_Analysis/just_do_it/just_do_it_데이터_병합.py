@@ -89,6 +89,7 @@ print("걸린 시간 : {:.2f}".format(end_time - start_time))'''
 # df = pd.merge(df_consumption, df_weather, on='날짜', how='left')
 
 df_init = pd.read_csv(r'Data/통합데이터.csv')
+print(df_init.__len__)
 df = df_init.copy()
 df['날짜'] = pd.to_datetime(df['날짜'], format='%Y-%m-%d')
 df['강수량'] = df['강수량'].fillna('No Rain')
@@ -131,11 +132,20 @@ df['count'] = 1
 
 
 ########### sampling ############
+if platform.system() == 'Windows':
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+elif platform.system() == 'Darwin':
+    plt.rcParams['font.family'] = 'AppleGothic'
+else:
+    plt.rcParams['font.family'] = 'NanumGothic'
+
+plt.rcParams['axes.unicode_minus'] = False
+
 from sklearn.model_selection import train_test_split
 one_week = df[df['날짜'].between('2024-06-01', '2024-6-07')]
 sample_df, _ = train_test_split(one_week, train_size=50000, stratify=one_week['요일'], random_state=42)
 
 
-pd.DataFrame(sample_df.groupby('기온')['count'].agg('sum').reset_index()).plot(x='기온', y='count', kind='scatter', title = '기온 VS 매출건수')
-plt.show()
+# pd.DataFrame(df.groupby('기온')['count'].agg('sum').reset_index()).plot(x='기온', y='count', kind='scatter', title = '기온 VS 매출건수')
+# plt.show()
 
