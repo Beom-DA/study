@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import missingno as msno
+from scipy import stats
 
 if platform.system() == 'Windows':
     plt.rcParams['font.family'] = 'Malgun Gothic'
@@ -183,3 +184,31 @@ df_merge['습도'] = df_merge['습도'].ffill()
 
 
 
+#fig, ax = plt.subplots()
+
+#sns.boxplot(data=df_merge, y='cnt', ax=ax[0])
+#plt.show()
+
+# print(df_merge.shape)
+# print(df_merge['cnt'].describe())
+
+df_merge_without_outliers = df_merge[np.abs(df_merge['cnt'] - df_merge['cnt'].mean()) <= (3*df_merge['cnt'].std())] # 이상치를 제거한 종속변수
+# print(df_merge_without_outliers.shape)
+# print(df_merge_without_outliers['cnt'].describe())
+
+
+
+#print(df_merge.columns)
+# df_corr = df_merge_without_outliers[['월', '요일', '공휴일', '시간', '분류', '성별', '기온', '풍속', '습도', 'cnt']].corr()
+# corr = np.array(df_corr)
+# corr[np.tril_indices_from(corr)] = False
+# fig, ax = plt.subplots()
+# sns.heatmap(data=df_corr, mask=corr, annot=True)
+# plt.show()
+
+
+
+fig, ax = plt.subplots(1,2)
+sns.displot(data=df_merge_without_outliers, y='cnt', ax=ax[0])
+stats.probplot(df_merge_without_outliers['cnt'], dist='norm', fit=True, plot=ax[1]) # fit=True -> 회귀선을 그린다.
+plt.show()
