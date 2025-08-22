@@ -209,6 +209,6 @@ df_merge_without_outliers = df_merge[np.abs(df_merge['cnt'] - df_merge['cnt'].me
 
 
 fig, ax = plt.subplots(1,2)
-sns.displot(data=df_merge_without_outliers, y='cnt', ax=ax[0])
+sns.histplot(data=df_merge_without_outliers, x='cnt', ax=ax[0], kde=True) 
 stats.probplot(df_merge_without_outliers['cnt'], dist='norm', fit=True, plot=ax[1]) # fit=True -> 회귀선을 그린다.
 plt.show()
