@@ -4,6 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
+import missingno as msno
+
+if platform.system() == 'Windows':
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+elif platform.system() == 'Darwin':
+    plt.rcParams['font.family'] = 'AppleGothic'
+else:
+    plt.rcParams['font.family'] = 'NanumGothic'
+
+plt.rcParams['axes.unicode_minus'] = False
 
 
 ######################    날씨 데이터    ########################3
@@ -70,6 +80,12 @@ for i in range(1, 13):
     df_1['날짜'] = df_1['날짜'].dt.strftime('%Y-%m-%d')
     df_1['날짜'] = pd.to_datetime(df_1['날짜'], format='%Y-%m-%d')
 
+    conditions = [
+        '2024-01-01','2024-02-09','2024-02-10','2024-02-11','2024-02-12','2024-03-01','2024-04-10','2024-05-05','2024-05-06','2024-05-15',
+        '2024-06-06','2024-08-15','2024-09-16','2024-09-17','2024-09-18','2024-10-03','2024-10-09','2024-12-25'
+    ]
+    df_1['공휴일'] = df_1['날짜'].isin(conditions).astype(int)
+    
     df_1['성별'] = df_1['성별'].apply(lambda x : 1 if x == 'M' else 0) # 여자면 0 남자면 1
 
     df_init = pd.concat([df_init, df_1], axis=0)
@@ -87,9 +103,9 @@ df_merge = pd.merge(df_comsumption, df_weather, on=['날짜', '시간'], how='in
 index_series = df_merge['index']
 df_merge = df_merge.drop('index', axis=1)
 df_merge['월'] = df_merge['날짜'].dt.month
-df_merge = df_merge.reindex(columns=['날짜','월','요일','시간', '분류', '성별','기온','강수량','풍속','습도','cnt'])
+df_merge = df_merge.reindex(columns=['날짜','월','요일', '공휴일','시간', '분류', '성별','기온','강수량','풍속','습도','cnt'])
 
-category_list = ['월','요일','시간','분류','성별']
+category_list = ['월','요일', '공휴일', '시간','분류','성별']
 df_merge[category_list] = df_merge[category_list].astype('category')
 #print(df_merge.info())
 
@@ -105,21 +121,65 @@ df_merge[category_list] = df_merge[category_list].astype('category')
 77: '패스트푸드', 78: '학교', 79: '한식', 80: '화장품소매', 81: '회비/공과금', 82: '휴게소/대형업체'
 '''
 
-if platform.system() == 'Windows':
-    plt.rcParams['font.family'] = 'Malgun Gothic'
-elif platform.system() == 'Darwin':
-    plt.rcParams['font.family'] = 'AppleGothic'
-else:
-    plt.rcParams['font.family'] = 'NanumGothic'
 
-plt.rcParams['axes.unicode_minus'] = False
+# grouped = pd.DataFrame(df_merge.groupby('날짜')['cnt'].agg('sum').reset_index()).plot(x='날짜', y='cnt', kind='line')
+# plt.show()
 
-grouped = df_merge.groupby('날짜')['cnt'].agg('sum')
-min_date = grouped.idxmin()
+# grouped = df_merge.groupby('날짜')['cnt'].agg('sum')
+# min_date = grouped.idxmin()
 #print(min_date) --> 2024-02-10은 구정이었기 때문에 카드 매출 건수가 급격히 줄어들었다. 마찬가지로 추석에도 이럴것이다.(9월 17일)
 # 구정과 추석을 제외한 나머지 날짜에 대해서는 대체적으로 매출건수가 비슷함.
 
 
+# grouped_df = grouped.reset_index()
+# print(grouped.describe())
+
+
+#print(df_merge.info())
+# msno.matrix(df_merge, figsize=(12,5))
+# plt.show()
+
+
+# print(df_merge['강수량'].describe())
+
+
+
+
+# grouped = df_merge.groupby(['날짜','시간'])[['기온','강수량','풍속','습도']].agg('mean').reset_index()
+# fig, ax = plt.subplots(2,2, figsize=(12,5))
+
+# sns.histplot(data=grouped, x='기온', ax = ax[0][0])
+# sns.histplot(data=grouped, x='강수량', ax = ax[0][1])
+# sns.histplot(data=grouped, x='풍속', ax = ax[1][0])
+# sns.histplot(data=grouped, x='습도', ax = ax[1][1])
+# ax[0][0].set_title('기온')
+# ax[0][1].set_title('강수량')
+# ax[1][0].set_title('풍속')
+# ax[1][1].set_title('습도')
+# plt.tight_layout()
+# plt.show()
+
+
+
+df_merge = df_merge.drop(columns='강수량')
+# print(df_merge.info())
+
+df_merge['습도'] = df_merge['습도'].ffill()
+# msno.matrix(df_merge, figsize=(12,5))
+# plt.show()
+
+# fig, ax = plt.subplots(2,3, figsize=(12,8))
+# sns.boxplot(data=df_merge, y='기온', ax=ax[0][0])
+# sns.boxplot(data=df_merge, y='풍속', ax=ax[0][1])
+# sns.boxplot(data=df_merge, y='습도', ax=ax[0][2])
+
+# sns.boxplot(data=df_merge, x='월', y='기온', ax=ax[1][0])
+# sns.boxplot(data=df_merge, x='월', y='풍속', ax=ax[1][1])
+# sns.boxplot(data=df_merge, x='월', y='습도', ax=ax[1][2])
+
+
+# plt.tight_layout()
+# plt.show()
 
 
 
