@@ -231,9 +231,28 @@ df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers[
 # grouped = df_merge_without_outliers.groupby('요일')['cnt'].agg('sum').reset_index()
 # sns.lineplot(data=grouped, x='요일', y='cnt', estimator=sum)
 # plt.show()
-grouped = df_merge_without_outliers.groupby('공휴일')['cnt'].agg('mean').reset_index()
-sns.barplot(data=grouped, x='공휴일', y='cnt')
-plt.show()
+# grouped = df_merge_without_outliers.groupby('공휴일')['cnt'].agg('mean').reset_index()
+# sns.barplot(data=grouped, x='공휴일', y='cnt')
+# plt.show()
+# grouped = df_merge_without_outliers.groupby('성별')['cnt'].agg('sum').reset_index()
+# sns.barplot(data=grouped, x='성별', y='cnt')
+# plt.show()
+# grouped = df_merge_without_outliers.groupby(['날짜','기온'])['cnt'].agg('sum').reset_index()
+# sns.scatterplot(data=grouped, x='기온', y='cnt')
+# plt.show()
+# grouped = df_merge_without_outliers.groupby('월')['cnt'].agg('sum').reset_index()
+# sns.barplot(data=grouped, x='월', y='cnt')
+# plt.show()
+# grouped = df_merge_without_outliers.groupby('시간')['cnt'].agg('sum').reset_index()
+# sns.barplot(data=grouped, x='시간', y='cnt')
+# plt.show()
+grouped = df_merge_without_outliers.groupby('분류')['cnt'].agg('sum').reset_index()
+# sns.barplot(data=grouped, x='분류', y='cnt')
+# plt.xticks(rotation=30)
+# plt.show()
+print(grouped.describe())
+
+
 
 
 
