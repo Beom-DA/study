@@ -192,7 +192,10 @@ df_merge['습도'] = df_merge['습도'].ffill()
 # print(df_merge.shape)
 # print(df_merge['cnt'].describe())
 
+# print((df_merge['cnt'] == 0).sum())
+
 df_merge_without_outliers = df_merge[np.abs(df_merge['cnt'] - df_merge['cnt'].mean()) <= (3*df_merge['cnt'].std())] # 이상치를 제거한 종속변수
+df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers['cnt']>0]
 # print(df_merge_without_outliers.shape)
 # print(df_merge_without_outliers['cnt'].describe())
 
@@ -208,13 +211,31 @@ df_merge_without_outliers = df_merge[np.abs(df_merge['cnt'] - df_merge['cnt'].me
 
 
 
-#pivot_table = pd.pivot_table(data=df_merge_without_outliers, index='날짜', columns='시간', values='cnt')
-grouped = df_merge_without_outliers.groupby(['날짜','시간'])['cnt'].agg('sum')
 
-
-fig, ax = plt.subplots(1,2)
+#fig, ax = plt.subplots(1,2)
 # sns.histplot(data=df_merge_without_outliers, x='cnt', ax=ax[0], kde=True) 
 # stats.probplot(df_merge_without_outliers['cnt'], dist='norm', fit=True, plot=ax[1]) # fit=True -> 회귀선을 그린다.
-sns.histplot(grouped, ax=ax[0], kde=True) 
-stats.probplot(grouped, dist='norm', fit=True, plot=ax[1])
+# sns.histplot(np.log1p(df_merge_without_outliers['cnt']), ax=ax[0], kde=True) 
+# stats.probplot(np.log1p(df_merge_without_outliers['cnt']), dist='norm', fit=True, plot=ax[1])
+# plt.show()
+
+
+
+# boxcox_y, lambda_ = stats.boxcox(df_merge_without_outliers['cnt'])
+# fig, ax = plt.subplots(1,2)
+# sns.histplot(boxcox_y, ax=ax[0], kde=True) 
+# stats.probplot(boxcox_y, dist='norm', fit=True, plot=ax[1])
+# plt.show()
+
+
+# grouped = df_merge_without_outliers.groupby('요일')['cnt'].agg('sum').reset_index()
+# sns.lineplot(data=grouped, x='요일', y='cnt', estimator=sum)
+# plt.show()
+grouped = df_merge_without_outliers.groupby('공휴일')['cnt'].agg('mean').reset_index()
+sns.barplot(data=grouped, x='공휴일', y='cnt')
 plt.show()
+
+
+
+# from sklearn.ensemble import RandomForestRegressor
+# rfmodel = RandomForestRegressor(n_estimators=100)
