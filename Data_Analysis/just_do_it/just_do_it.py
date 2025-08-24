@@ -227,6 +227,14 @@ df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers[
 # stats.probplot(boxcox_y, dist='norm', fit=True, plot=ax[1])
 # plt.show()
 
+from sklearn.preprocessing import PowerTransformer
+pt = PowerTransformer(method='box-cox')
+yeo_johnson_data = pt.fit_transform(df_merge_without_outliers[['cnt']]).flatten()
+fig, ax = plt.subplots(1,2)
+sns.histplot(yeo_johnson_data, ax=ax[0], kde=True) 
+stats.probplot(yeo_johnson_data, dist='norm', fit=True, plot=ax[1])
+plt.show()
+
 
 # grouped = df_merge_without_outliers.groupby('요일')['cnt'].agg('sum').reset_index()
 # sns.lineplot(data=grouped, x='요일', y='cnt', estimator=sum)
@@ -259,25 +267,36 @@ df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers[
 
 
 ############### 계층적 샘플링 ##################
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 
-df_merge_without_outliers['stratify'] = df_merge_without_outliers['요일'].astype(str) + '_' + df_merge_without_outliers['시간'].astype(str) + '_' +df_merge_without_outliers['분류'].astype(str)
-counts = df_merge_without_outliers['stratify'].value_counts()
-df_stratify_filtered = df_merge_without_outliers[df_merge_without_outliers['stratify'].isin(counts[counts >= 2].index)]
-sample_df , _ = train_test_split(df_stratify_filtered, train_size=0.1, stratify=df_stratify_filtered['stratify'], random_state=42)
+# df_merge_without_outliers['stratify'] = df_merge_without_outliers['요일'].astype(str) + '_' + df_merge_without_outliers['시간'].astype(str) + '_' +df_merge_without_outliers['분류'].astype(str)
+# counts = df_merge_without_outliers['stratify'].value_counts()
+# df_stratify_filtered = df_merge_without_outliers[df_merge_without_outliers['stratify'].isin(counts[counts >= 2].index)]
+# sample_df , _ = train_test_split(df_stratify_filtered, train_size=0.1, stratify=df_stratify_filtered['stratify'], random_state=42)
 
-print(sample_df.info())
-print(sample_df.shape)
+# # print(sample_df.info())
+# # print(sample_df.shape)
 
-
-
-
-
+# x_train = sample_df[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
+# y_train = sample_df['cnt']
 
 
 
+
+
+
+
+# def rmsle(y, y_,convertExp=True):
+#     if convertExp:
+#         y = np.exp(y),
+#         y_ = np.exp(y_)
+#     log1 = np.nan_to_num(np.array([np.log(v + 1) for v in y]))
+#     log2 = np.nan_to_num(np.array([np.log(v + 1) for v in y_]))
+#     calc = (log1 - log2) ** 2
+#     return np.sqrt(np.mean(calc))
 
 # from sklearn.ensemble import RandomForestRegressor
 # rfmodel = RandomForestRegressor(n_estimators=100)
-# train_x = 
-# model_fit = rfmodel.fit(sample_df)
+# rfmodel.fit(x_train, y_train)
+# preds = rfmodel.predict(X=x_train)
+# print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
