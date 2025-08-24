@@ -246,11 +246,32 @@ df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers[
 # grouped = df_merge_without_outliers.groupby('시간')['cnt'].agg('sum').reset_index()
 # sns.barplot(data=grouped, x='시간', y='cnt')
 # plt.show()
-grouped = df_merge_without_outliers.groupby('분류')['cnt'].agg('sum').reset_index()
+#grouped = df_merge_without_outliers.groupby('분류')['cnt'].agg('sum').reset_index()
 # sns.barplot(data=grouped, x='분류', y='cnt')
 # plt.xticks(rotation=30)
 # plt.show()
-print(grouped.describe())
+
+
+
+
+
+
+
+
+############### 계층적 샘플링 ##################
+from sklearn.model_selection import train_test_split
+
+df_merge_without_outliers['stratify'] = df_merge_without_outliers['요일'].astype(str) + '_' + df_merge_without_outliers['시간'].astype(str) + '_' +df_merge_without_outliers['분류'].astype(str)
+counts = df_merge_without_outliers['stratify'].value_counts()
+df_stratify_filtered = df_merge_without_outliers[df_merge_without_outliers['stratify'].isin(counts[counts >= 2].index)]
+sample_df , _ = train_test_split(df_stratify_filtered, train_size=0.1, stratify=df_stratify_filtered['stratify'], random_state=42)
+
+print(sample_df.info())
+print(sample_df.shape)
+
+
+
+
 
 
 
@@ -258,3 +279,5 @@ print(grouped.describe())
 
 # from sklearn.ensemble import RandomForestRegressor
 # rfmodel = RandomForestRegressor(n_estimators=100)
+# train_x = 
+# model_fit = rfmodel.fit(sample_df)
