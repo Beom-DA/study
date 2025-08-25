@@ -266,19 +266,49 @@ df_merge_without_outliers = df_merge_without_outliers[df_merge_without_outliers[
 
 
 
+
 ############### 계층적 샘플링 ##################
+df_merge_without_outliers['월'] = df_merge_without_outliers['월'].astype(int)
+train_data = df_merge_without_outliers[df_merge_without_outliers['월'] < 10]
+test_data = df_merge_without_outliers[df_merge_without_outliers['월'] > 9]
+df_merge_without_outliers['월'] = df_merge_without_outliers['월'].astype('category')
+train_data['월'] = train_data['월'].astype('category')
+test_data['월'] = test_data['월'].astype('category')
+print(train_data.info()) # 2100만
+print(train_data.shape)
+print(test_data.info()) # 700만
+print(test_data.shape)
+
+
+
+
 from sklearn.model_selection import train_test_split
 
-df_merge_without_outliers['stratify'] = df_merge_without_outliers['요일'].astype(str) + '_' + df_merge_without_outliers['시간'].astype(str) + '_' +df_merge_without_outliers['분류'].astype(str)
-counts = df_merge_without_outliers['stratify'].value_counts()
-df_stratify_filtered = df_merge_without_outliers[df_merge_without_outliers['stratify'].isin(counts[counts >= 2].index)]
-sample_df , _ = train_test_split(df_stratify_filtered, train_size=0.1, stratify=df_stratify_filtered['stratify'], random_state=42)
+train_data['stratify'] = train_data['요일'].astype(str) + '_' + train_data['시간'].astype(str)# + '_' + train_data['분류'].astype(str)
+counts = train_data['stratify'].value_counts()
+df_stratify_filtered = train_data[train_data['stratify'].isin(counts[counts >= 2].index)]
+train_sample , _ = train_test_split(df_stratify_filtered, train_size=0.025, stratify=df_stratify_filtered['stratify'], random_state=42)
+
+test_data['stratify'] = test_data['요일'].astype(str) + '_' + test_data['시간'].astype(str)# + '_' + test_data['분류'].astype(str)
+counts = test_data['stratify'].value_counts()
+df_stratify_filtered = test_data[test_data['stratify'].isin(counts[counts >= 2].index)]
+test_sample , _ = train_test_split(df_stratify_filtered, train_size=0.05, stratify=df_stratify_filtered['stratify'], random_state=42)
 
 # print(sample_df.info())
 # print(sample_df.shape)
 
-x_train = sample_df[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
-y_train = np.log1p(sample_df['cnt'])
+# x_train = train_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
+x_train = train_sample[['월','요일','공휴일','시간','성별']]
+y_train = train_sample['cnt']
+
+# x_test = test_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
+x_test = test_sample[['월','요일','공휴일','시간','성별']]
+y_test = test_sample['cnt']
+
+# print(y_train.mean())
+# print(y_train.std())
+# print(y_test.mean())
+# print(y_test.std())
 
 
 
@@ -295,23 +325,49 @@ def rmsle(y, y_,convertExp=True):
     calc = (log1 - log2) ** 2
     return np.sqrt(np.mean(calc))
 
-# from sklearn.ensemble import RandomForestRegressor
-# rfmodel = RandomForestRegressor(n_estimators=100)
-# rfmodel.fit(x_train, y_train)
-# preds = rfmodel.predict(X=x_train)
-# print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
+from sklearn.ensemble import RandomForestRegressor
+rfmodel = RandomForestRegressor(n_estimators=100)
+rfmodel.fit(x_train, y_train)
+preds = rfmodel.predict(X=x_train)
+print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
 
 
 
 
 
 
-from sklearn.ensemble import GradientBoostingRegressor
-gb_model = GradientBoostingRegressor(
-    n_estimators=800,
-    learning_rate=0.1,
-    random_state=42
-)
-gb_model.fit(x_train, y_train)
-pred = gb_model.predict(x_train)
-print ("RMSLE Value For Random Forest: ",rmsle(y_train,pred,True))
+# from sklearn.ensemble import GradientBoostingRegressor
+# gb_model = GradientBoostingRegressor(
+#     n_estimators=200,
+#     learning_rate=0.1,
+#     random_state=42
+# )
+# gb_model.fit(x_train, y_train)
+# pred = gb_model.predict(X=x_train)
+# print ("RMSLE Value For Random Forest: ",rmsle(np.exp(y_train),np.exp(pred),False))
+
+
+# import lightgbm as lgb
+# from sklearn.metrics import mean_squared_error
+# train_data = lgb.Dataset(x_train, label=y_train)
+# valid_data = lgb.Dataset(x_test, label=y_test)
+
+# params = {
+#     'objective': 'regression',   # 회귀
+#     'metric': 'rmse',            # 평가 지표
+#     'boosting_type': 'gbdt',     # Gradient Boosting (default)
+#     'learning_rate': 0.05,
+#     'num_leaves': 31,
+#     'max_depth': -1,             # 제한 없음
+#     'verbose': -1
+# }
+# model = lgb.train(
+#     params,
+#     train_data,
+#     valid_sets=[valid_data],
+#     num_boost_round=1000,        # 트리 개수 (early stopping으로 줄어듦)
+#     callbacks=[lgb.early_stopping(stopping_rounds=100)]   # 성능이 50라운드 동안 개선 없으면 멈춤
+# )
+# y_pred = model.predict(x_test, num_iteration=model.best_iteration)
+# rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+# print("RMSE:", rmse)
