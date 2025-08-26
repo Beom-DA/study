@@ -325,11 +325,11 @@ def rmsle(y, y_,convertExp=True):
     calc = (log1 - log2) ** 2
     return np.sqrt(np.mean(calc))
 
-from sklearn.ensemble import RandomForestRegressor
-rfmodel = RandomForestRegressor(n_estimators=100)
-rfmodel.fit(x_train, y_train)
-preds = rfmodel.predict(X=x_train)
-print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
+# from sklearn.ensemble import RandomForestRegressor
+# rfmodel = RandomForestRegressor(n_estimators=100)
+# rfmodel.fit(x_train, y_train)
+# preds = rfmodel.predict(X=x_train)
+# print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
 
 
 
