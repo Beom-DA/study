@@ -1,4 +1,4 @@
--- https://leetcode.com/problems/analyze-organization-hierarchy/description/
+-- https://leetcode.com/problems/analyze-organization-hierarchy/description/ 
 
 
 -- Tree node를 이용해서 데이터를 가공하는 법을 다뤄본 적이 없어서 다른 사람의 코드를 참고했다
