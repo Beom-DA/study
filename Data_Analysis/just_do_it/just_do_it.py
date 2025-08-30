@@ -274,36 +274,36 @@ test_data = df_merge_without_outliers[df_merge_without_outliers['월'] > 9]
 df_merge_without_outliers['월'] = df_merge_without_outliers['월'].astype('category')
 train_data['월'] = train_data['월'].astype('category')
 test_data['월'] = test_data['월'].astype('category')
-print(train_data.info()) # 2100만
-print(train_data.shape)
-print(test_data.info()) # 700만
-print(test_data.shape)
+# print(train_data.info()) # 2100만
+# print(train_data.shape)
+# print(test_data.info()) # 700만
+# print(test_data.shape)
 
 
 
 
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 
-train_data['stratify'] = train_data['요일'].astype(str) + '_' + train_data['시간'].astype(str)# + '_' + train_data['분류'].astype(str)
-counts = train_data['stratify'].value_counts()
-df_stratify_filtered = train_data[train_data['stratify'].isin(counts[counts >= 2].index)]
-train_sample , _ = train_test_split(df_stratify_filtered, train_size=0.025, stratify=df_stratify_filtered['stratify'], random_state=42)
+# train_data['stratify'] = train_data['요일'].astype(str) + '_' + train_data['시간'].astype(str)# + '_' + train_data['분류'].astype(str)
+# counts = train_data['stratify'].value_counts()
+# df_stratify_filtered = train_data[train_data['stratify'].isin(counts[counts >= 2].index)]
+# train_sample , _ = train_test_split(df_stratify_filtered, train_size=0.025, stratify=df_stratify_filtered['stratify'], random_state=42)
 
-test_data['stratify'] = test_data['요일'].astype(str) + '_' + test_data['시간'].astype(str)# + '_' + test_data['분류'].astype(str)
-counts = test_data['stratify'].value_counts()
-df_stratify_filtered = test_data[test_data['stratify'].isin(counts[counts >= 2].index)]
-test_sample , _ = train_test_split(df_stratify_filtered, train_size=0.05, stratify=df_stratify_filtered['stratify'], random_state=42)
+# test_data['stratify'] = test_data['요일'].astype(str) + '_' + test_data['시간'].astype(str)# + '_' + test_data['분류'].astype(str)
+# counts = test_data['stratify'].value_counts()
+# df_stratify_filtered = test_data[test_data['stratify'].isin(counts[counts >= 2].index)]
+# test_sample , _ = train_test_split(df_stratify_filtered, train_size=0.05, stratify=df_stratify_filtered['stratify'], random_state=42)
 
-# print(sample_df.info())
-# print(sample_df.shape)
+# # print(sample_df.info())
+# # print(sample_df.shape)
 
-# x_train = train_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
-x_train = train_sample[['월','요일','공휴일','시간','성별']]
-y_train = train_sample['cnt']
+# # x_train = train_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
+x_train = train_data[['월','요일','공휴일','시간']]
+y_train = train_data['cnt']
 
-# x_test = test_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
-x_test = test_sample[['월','요일','공휴일','시간','성별']]
-y_test = test_sample['cnt']
+# # x_test = test_sample[['월','요일','공휴일','시간','분류','성별','기온','풍속','습도']]
+# x_test = test_sample[['월','요일','공휴일','시간','성별']]
+# y_test = test_sample['cnt']
 
 # print(y_train.mean())
 # print(y_train.std())
@@ -325,11 +325,11 @@ def rmsle(y, y_,convertExp=True):
     calc = (log1 - log2) ** 2
     return np.sqrt(np.mean(calc))
 
-# from sklearn.ensemble import RandomForestRegressor
-# rfmodel = RandomForestRegressor(n_estimators=100)
-# rfmodel.fit(x_train, y_train)
-# preds = rfmodel.predict(X=x_train)
-# print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
+from sklearn.ensemble import RandomForestRegressor
+rfmodel = RandomForestRegressor(n_estimators=100)
+rfmodel.fit(x_train, y_train)
+preds = rfmodel.predict(X=x_train)
+print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
 
 
 
