@@ -325,26 +325,26 @@ def rmsle(y, y_,convertExp=True):
     calc = (log1 - log2) ** 2
     return np.sqrt(np.mean(calc))
 
-from sklearn.ensemble import RandomForestRegressor
-rfmodel = RandomForestRegressor(n_estimators=100)
-rfmodel.fit(x_train, y_train)
-preds = rfmodel.predict(X=x_train)
-print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
+# from sklearn.ensemble import RandomForestRegressor
+# rfmodel = RandomForestRegressor(n_estimators=100)
+# rfmodel.fit(x_train, y_train)
+# preds = rfmodel.predict(X=x_train)
+# print ("RMSLE Value For Random Forest: ",rmsle(y_train,preds,False))
 
 
 
 
 
 
-# from sklearn.ensemble import GradientBoostingRegressor
-# gb_model = GradientBoostingRegressor(
-#     n_estimators=200,
-#     learning_rate=0.1,
-#     random_state=42
-# )
-# gb_model.fit(x_train, y_train)
-# pred = gb_model.predict(X=x_train)
-# print ("RMSLE Value For Random Forest: ",rmsle(np.exp(y_train),np.exp(pred),False))
+from sklearn.ensemble import GradientBoostingRegressor
+gb_model = GradientBoostingRegressor(
+    n_estimators=200,
+    learning_rate=0.1,
+    random_state=42
+)
+gb_model.fit(x_train, y_train)
+pred = gb_model.predict(X=x_train)
+print ("RMSLE Value For Random Forest: ",rmsle(y_train, pred, False))
 
 
 # import lightgbm as lgb
