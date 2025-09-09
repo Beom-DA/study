@@ -341,7 +341,7 @@ gb_model = GradientBoostingRegressor(
     n_estimators=200,
     learning_rate=0.1,
     random_state=42
-) 
+)  
 gb_model.fit(x_train, y_train)
 pred = gb_model.predict(X=x_train)
 print ("RMSLE Value For Random Forest: ",rmsle(y_train, pred, False))
