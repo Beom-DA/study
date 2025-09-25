@@ -323,7 +323,7 @@ def rmsle(y, y_,convertExp=True):
     log1 = np.nan_to_num(np.array([np.log(v + 1) for v in y]))
     log2 = np.nan_to_num(np.array([np.log(v + 1) for v in y_]))
     calc = (log1 - log2) ** 2
-    return np.sqrt(np.mean(calc))
+    return np.sqrt(np.mean(calc))  
 
 # from sklearn.ensemble import RandomForestRegressor
 # rfmodel = RandomForestRegressor(n_estimators=100)
