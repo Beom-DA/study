@@ -15,7 +15,7 @@ from just_do_it_정규성_변환 import df
 
 ############### 금액 ###################
 
-# ## Z-Score Scaling  
+# ## Z-Score Scaling   
 # from sklearn.preprocessing import StandardScaler
 
 # scaler = StandardScaler()
