@@ -18,7 +18,7 @@ from just_do_it_정규성_변환 import df
 # ## Z-Score Scaling
 # from sklearn.preprocessing import StandardScaler
  
-# scaler = StandardScaler()   
+# scaler = StandardScaler()    
 # scaled_data = scaler.fit_transform(df['log_금액'].values.reshape(-1,1)) # standardscaler는 2차원 배열 입력을 기대하는데 Series는 1차원이라서 에러가 난다.
 # scaled_series = pd.Series(scaled_data.flatten(), index=df['log_금액'].index)
 # print('Z-score Scaling mean_value : {:.2f}'.format(scaled_series.mean()))
